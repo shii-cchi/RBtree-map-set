@@ -35,9 +35,21 @@ class RedBlackTree {
   void RemoveTree();
   Node *GetRoot();
   void SetRoot(Node *node);
-  void SetHead();
+  void SetupHead();
   size_type GetSize();
+  void SwapTree(Node *node);
+  Node *GetMinNode();
+  Node *GetMaxNode();
+  void SetMinNode(Node *node);
+  void SetMaxNode(Node *node);
+  bool isEmpty();
+  iterator Insert(const key_type key);
+  std::pair<iterator, bool> InsertNode(Node *root, Node *new_node);
+  void BalanceTree(Node *new_node);
+  void RotateLeft(Node *node);
+  void RotateRight(Node *node);
 
+ private:
   struct Node {
     Node()
         : parent(nullptr),
@@ -74,7 +86,7 @@ class RedBlackTree {
       color = kRed;
     }
 
-    GetNextNode() const noexcept {
+    Node *GetNextNode() const noexcept {
       Node *node = const_cast<Node *>(this);
       if (node->color == kRed &&
           (node->parent == nullptr || node->parent->parent == node)) {
@@ -100,7 +112,7 @@ class RedBlackTree {
       return node;
     }
 
-    GetPreviousNode() const noexcept {
+    Node *GetPreviousNode() const noexcept {
       Node *node = const_cast<Node *>(this);
 
       if (node->color == kRed &&
@@ -131,7 +143,6 @@ class RedBlackTree {
     Color color;
   };
 
- private:
   Node *head;
   size_type tree_size;
   Compare cmp;
