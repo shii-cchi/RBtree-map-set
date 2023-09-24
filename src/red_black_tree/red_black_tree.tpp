@@ -155,6 +155,12 @@ bool RedBlackTree<Key, Compare>::isEmpty() {
   return tree_size == 0;
 }
 
+template <typename Key, typename Comparator>
+typename RedBlackTree<Key, Comparator>::size_type
+RedBlackTree<Key, Comparator>::MaxSize() const noexcept {
+  return ((std::numeric_limits<size_type>::max() / 2) - sizeof(RedBlackTree) - sizeof(Node)) / sizeof(Node);
+}
+
 template <typename Key, typename Compare>
 typename RedBlackTree<Key, Compare>::iterator
 RedBlackTree<Key, Compare>::Insert(const key_type key) {
