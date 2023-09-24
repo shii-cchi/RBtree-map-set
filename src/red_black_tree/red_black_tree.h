@@ -45,9 +45,16 @@ class RedBlackTree {
   bool isEmpty();
   iterator Insert(const key_type key);
   std::pair<iterator, bool> InsertNode(Node *root, Node *new_node);
-  void BalanceTree(Node *new_node);
+  void BalanceTree(Node *node);
   void RotateLeft(Node *node);
   void RotateRight(Node *node);
+  iterator Find(const_reference key);
+  iterator LowerBound(const_reference key);
+  iterator UpperBound(const_reference key);
+  iterator Begin() noexcept;
+  const_iterator Begin() const noexcept;
+  iterator End() noexcept;
+  const_iterator End() const noexcept;
 
  private:
   struct Node {
@@ -141,6 +148,102 @@ class RedBlackTree {
     Node *right;
     key_type key;
     Color color;
+  };
+
+  struct Iterator {
+    using iterator_category = std::forward_iterator_tag;
+    using difference_type = std::ptrdiff_t;
+    using value_type = typename RedBlackTree<Key, Compare>::Node::key_type;
+    using pointer = value_type *;
+    using reference = value_type &;
+
+    Iterator() = delete;
+
+    explicit Iterator(Node *node) : node_(node) {}
+
+    reference operator*() const noexcept { return node_->key; }
+
+    iterator &operator++() noexcept {
+      node_ = node_->GetNextNode();
+      return *this;
+    }
+
+    iterator operator++(int) noexcept {
+      iterator tmp{node_};
+      ++(*this);
+      return tmp;
+    }
+
+    iterator &operator--() noexcept {
+      node_ = node_->GetPreviousNode();
+      return *this;
+    }
+
+    iterator operator--(int) noexcept {
+      iterator tmp{node_};
+      --(*this);
+      return tmp;
+    }
+
+    bool operator==(const iterator &other) const noexcept {
+      return node_ == other.node_;
+    }
+
+    bool operator!=(const iterator &other) const noexcept {
+      return node_ != other.node_;
+    }
+
+    Node *node_;
+  };
+
+  struct IteratorConst {
+    using iterator_category = std::forward_iterator_tag;
+    using difference_type = std::ptrdiff_t;
+    using value_type = typename RedBlackTree<Key, Compare>::Node::key_type;
+    using pointer = const value_type *;
+    using reference = const value_type &;
+
+    IteratorConst() = delete;
+
+    explicit IteratorConst(const Node *node) : node_(node) {}
+
+    IteratorConst(const iterator &it) : node_(it.node_) {}
+
+    reference operator*() const noexcept { return node_->key; }
+
+    const_iterator &operator++() noexcept {
+      node_ = node_->GetNextNode();
+      return *this;
+    }
+
+    const_iterator operator++(int) noexcept {
+      const_iterator tmp{node_};
+      ++(*this);
+      return tmp;
+    }
+
+    const_iterator &operator--() noexcept {
+      node_ = node_->GetPreviousNode();
+      return *this;
+    }
+
+    const_iterator operator--(int) noexcept {
+      const_iterator tmp{node_};
+      --(*this);
+      return tmp;
+    }
+
+    friend bool operator==(const const_iterator &it1,
+                           const const_iterator &it2) noexcept {
+      return it1.node_ == it2.node_;
+    }
+
+    friend bool operator!=(const const_iterator &it1,
+                           const const_iterator &it2) noexcept {
+      return it1.node_ != it2.node_;
+    }
+
+    const Node *node_;
   };
 
   Node *head;
