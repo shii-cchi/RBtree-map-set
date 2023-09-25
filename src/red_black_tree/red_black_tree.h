@@ -2,6 +2,7 @@
 #define CPP2_S21_CONTAINERS_RED_BLACK_TREE_RED_BLACK_TREE_H_
 
 #include <functional>
+#include <limits>
 
 namespace s21 {
 
@@ -29,7 +30,7 @@ class RedBlackTree {
   RedBlackTree &operator=(RedBlackTree &&other) noexcept;
   ~RedBlackTree();
 
-  void CopyTree(Node *node);
+  void CopyTree(const Node *other);
   Node *CopyNode(const Node *node, Node *parent);
   void RemoveNode(Node *node);
   void RemoveTree();
@@ -49,6 +50,7 @@ class RedBlackTree {
   void BalanceTree(Node *node);
   void RotateLeft(Node *node);
   void RotateRight(Node *node);
+  void UpdateSizeAndMinMaxNode();
   iterator Find(const_reference key);
   iterator LowerBound(const_reference key);
   iterator UpperBound(const_reference key);
@@ -56,6 +58,19 @@ class RedBlackTree {
   const_iterator Begin() const noexcept;
   iterator End() noexcept;
   const_iterator End() const noexcept;
+  void Merge(RedBlackTree &other);
+  void Erase(iterator position) noexcept;
+  Node *ExtractNode(iterator position) noexcept;
+  void PrepareNodeWithTwoChildren(Node *node);
+  void PrepareNodeWithoutChildren(Node *node);
+  void PrepareNodeWithOneChild(Node *node);
+  void ExtractFromTree(Node *node);
+  void SwapForErase(Node *node, Node *other) noexcept;
+  void SwapNode(Node *node_1, Node *node_2) noexcept;
+  void UpdateParent(Node *node) noexcept;
+  void BalanceForErase(Node *deleted_node) noexcept;
+  Node *SearchMinNode(Node *node) const noexcept;
+  Node *SearchMaxNode(Node *node) const noexcept;
 
  private:
   struct Node {
