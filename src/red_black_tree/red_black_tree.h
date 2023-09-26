@@ -10,7 +10,7 @@ enum Color { kRed, kBlack };
 
 template <typename Key, typename Compare = std::less<Key>>
 class RedBlackTree {
- private:
+public:
   struct Node;
   struct Iterator;
   struct IteratorConst;
@@ -50,7 +50,7 @@ class RedBlackTree {
   void BalanceTree(Node *node);
   void RotateLeft(Node *node);
   void RotateRight(Node *node);
-  void UpdateSizeAndMinMaxNode();
+  void UpdateSizeAndMinMaxNode(Node *new_node);
   iterator Find(const_reference key);
   iterator LowerBound(const_reference key);
   iterator UpperBound(const_reference key);
@@ -68,11 +68,18 @@ class RedBlackTree {
   void SwapForErase(Node *node, Node *other) noexcept;
   void SwapNode(Node *node_1, Node *node_2) noexcept;
   void UpdateParent(Node *node) noexcept;
-  void BalanceForErase(Node *deleted_node) noexcept;
+  void BalanceForErase(Node *extracted_node) noexcept;
+  void BalanceRedSibling(Node *sibling, Node *extracted_node, Node *parent) noexcept;
+  bool BalanceBlackSiblingWithBlackChildren(Node *sibling, Node *extracted_node, Node *parent) noexcept;
+  void BalanceBlackSiblingWithOneBlackChild(Node *sibling, Node *extracted_node, Node *parent) noexcept;
+  bool isRed(Node *node) noexcept;
+  bool IsChildrenBlack(Node *node) const noexcept;
+  bool IsLeftChildRed(Node *node) const noexcept;
+  bool IsRightChildRed(Node *node) const noexcept;
   Node *SearchMinNode(Node *node) const noexcept;
   Node *SearchMaxNode(Node *node) const noexcept;
 
- private:
+
   struct Node {
     Node()
         : parent(nullptr),
@@ -169,7 +176,7 @@ class RedBlackTree {
   struct Iterator {
     using iterator_category = std::forward_iterator_tag;
     using difference_type = std::ptrdiff_t;
-    using value_type = typename RedBlackTree<Key, Compare>::Node::key_type;
+    using value_type = typename RedBlackTree<Key, Compare>::key_type;
     using pointer = value_type *;
     using reference = value_type &;
 

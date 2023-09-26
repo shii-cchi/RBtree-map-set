@@ -177,8 +177,8 @@ RedBlackTree<Key, Compare>::Insert(const key_type key) {
   Node *new_node = new Node{key};
 
   auto res = InsertNode(head->parent, new_node);
-  iterator it = result.first;
-  bool is_inserted = result.second;
+  iterator it = res.first;
+  bool is_inserted = res.second;
 
   if (!is_inserted) {
     delete new_node;
@@ -194,7 +194,7 @@ RedBlackTree<Key, Compare>::InsertNode(Node *root, Node *new_node) {
     new_node->color = kBlack;
     new_node->parent = head;
     SetRoot(new_node);
-    UpdateSizeAndMinMaxNode();
+    UpdateSizeAndMinMaxNode(new_node);
     return {iterator(new_node), true};
   }
 
@@ -220,7 +220,7 @@ RedBlackTree<Key, Compare>::InsertNode(Node *root, Node *new_node) {
   } else {
     parent->right = new_node;
   }
-  UpdateSizeAndMinMaxNode();
+  UpdateSizeAndMinMaxNode(new_node);
   BalanceTree(new_node);
 
   return {iterator(new_node), true};
@@ -312,7 +312,7 @@ void RedBlackTree<Key, Compare>::RotateRight(Node *node) {
 }
 
 template <typename Key, typename Compare>
-void RedBlackTree<Key, Compare>::UpdateSizeAndMinMaxNode() {
+void RedBlackTree<Key, Compare>::UpdateSizeAndMinMaxNode(Node *new_node) {
   tree_size++;
 
   if (GetMinNode() == head || GetMinNode()->left) {
@@ -340,11 +340,11 @@ template <typename Key, typename Compare>
 typename RedBlackTree<Key, Compare>::iterator
 RedBlackTree<Key, Compare>::LowerBound(const_reference key) {
   Node *current = GetRoot();
-  Node *res = End().node;
+  Node *res = End().node_;
 
   while (current) {
     if (cmp(key, current->key)) {
-      result = current;
+      res = current;
       current = current->left;
     } else {
       current = current->right;
@@ -537,83 +537,111 @@ void RedBlackTree<KeyType, Comparator>::UpdateParent(Node *node) noexcept {
 
 template <typename KeyType, typename Comparator>
 void RedBlackTree<KeyType, Comparator>::BalanceForErase(
-    Node *deleted_node) noexcept {
-  Node *check_node = deleted_node;
-  Node *parent = deleted_node->parent;
+    Node *extracted_node) noexcept {
+  while (extracted_node != GetRoot() && extracted_node->color == kBlack) {
+    Node *parent = extracted_node->parent;
+    Node *sibling =
+        (extracted_node == parent->left) ? parent->right : parent->left;
 
-  while (check_node != GetRoot() && check_node->color == kBlack) {
-    if (check_node == parent->left) {
-      Node *sibling = parent->right;
+    if (isRed(sibling)) {
+      BalanceRedSibling(sibling, extracted_node, parent);
+    }
 
-      if (sibling->color == kRed) {
-        std::swap(sibling->color, parent->color);
-        RotateLeft(parent);
-        parent = check_node->parent;
-        sibling = parent->right;
-      }
-
-      if (sibling->color == kBlack &&
-          (!sibling->left || sibling->left->color == kBlack) &&
-          (!sibling->right || sibling->right->color == kBlack)) {
-        sibling->color = kRed;
-        if (parent->color == kRed) {
-          parent->color = kBlack;
-          break;
-        }
-
-        check_node = parent;
-        parent = check_node->parent;
-      } else {
-        if (sibling->left && sibling->left->color == kRed &&
-            (!sibling->right || sibling->right->color == kBlack)) {
-          std::swap(sibling->color, sibling->left->color);
-          RotateRight(sibling);
-          sibling = parent->right;
-        }
-
-        sibling->right->color = kBlack;
-        sibling->color = parent->color;
-        parent->color = kBlack;
-        RotateLeft(parent);
+    if (!isRed(sibling) && IsChildrenBlack(sibling)) {
+      bool is_balanced =
+          BalanceBlackSiblingWithBlackChildren(sibling, extracted_node, parent);
+      if (is_balanced) {
         break;
       }
     } else {
-      Node *sibling = parent->left;
-
-      if (sibling->color == kRed) {
-        std::swap(sibling->color, parent->color);
-        RotateRight(parent);
-        parent = check_node->parent;
-        sibling = parent->left;
-      }
-
-      if (sibling->color == kBlack &&
-          (!sibling->left || sibling->left->color == kBlack) &&
-          (!sibling->right || sibling->right->color == kBlack)) {
-        sibling->color = kRed;
-        if (parent->color == kRed) {
-          parent->color = kBlack;
-          break;
-        }
-
-        check_node = parent;
-        parent = check_node->parent;
-      } else {
-        if (sibling->right && sibling->right->color == kRed &&
-            (!sibling->left || sibling->left->color == kBlack)) {
-          std::swap(sibling->color, sibling->right->color);
-          RotateLeft(sibling);
-          sibling = parent->left;
-        }
-
-        sibling->left->color = kBlack;
-        sibling->color = parent->color;
-        parent->color = kBlack;
-        RotateRight(parent);
-        break;
-      }
+      BalanceBlackSiblingWithOneBlackChild(sibling, extracted_node, parent);
     }
   }
+}
+
+template <typename KeyType, typename Comparator>
+void RedBlackTree<KeyType, Comparator>::BalanceRedSibling(
+    Node *sibling, Node *extracted_node, Node *parent) noexcept {
+  std::swap(sibling->color, parent->color);
+  if (extracted_node == parent->left) {
+    RotateLeft(parent);
+    parent = extracted_node->parent;
+    sibling = parent->right;
+  } else {
+    RotateRight(parent);
+    parent = extracted_node->parent;
+    sibling = parent->left;
+  }
+}
+
+template <typename KeyType, typename Comparator>
+bool RedBlackTree<KeyType, Comparator>::BalanceBlackSiblingWithBlackChildren(
+    Node *sibling, Node *extracted_node, Node *parent) noexcept {
+  sibling->color = kRed;
+  if (parent->color == kRed) {
+    parent->color = kBlack;
+    return true;
+  }
+
+  extracted_node = parent;
+  parent = extracted_node->parent;
+  return false;
+}
+
+template <typename KeyType, typename Comparator>
+void RedBlackTree<KeyType, Comparator>::BalanceBlackSiblingWithOneBlackChild(
+    Node *sibling, Node *extracted_node, Node *parent) noexcept {
+  if (extracted_node == parent->left) {
+    if (IsLeftChildRed(sibling)) {
+      std::swap(sibling->color, sibling->left->color);
+      RotateRight(sibling);
+      sibling = parent->right;
+    }
+
+    sibling->right->color = kBlack;
+    sibling->color = parent->color;
+    parent->color = kBlack;
+    RotateLeft(parent);
+  } else {
+    if (IsRightChildRed(sibling)) {
+      std::swap(sibling->color, sibling->right->color);
+      RotateLeft(sibling);
+      sibling = parent->left;
+    }
+
+    sibling->left->color = kBlack;
+    sibling->color = parent->color;
+    parent->color = kBlack;
+    RotateRight(parent);
+  }
+
+  extracted_node->color = kBlack;
+}
+
+template <typename KeyType, typename Comparator>
+bool RedBlackTree<KeyType, Comparator>::isRed(Node *node) noexcept {
+  return node->color == kRed;
+}
+
+template <typename KeyType, typename Comparator>
+bool RedBlackTree<KeyType, Comparator>::IsChildrenBlack(
+    Node *node) const noexcept {
+  return (!node->left || node->left->color == kBlack) &&
+         (!node->right || node->right->color == kBlack);
+}
+
+template <typename KeyType, typename Comparator>
+bool RedBlackTree<KeyType, Comparator>::IsLeftChildRed(
+    Node *node) const noexcept {
+  return node->left && node->left->color == kRed &&
+         (!node->right || node->right->color == kBlack);
+}
+
+template <typename KeyType, typename Comparator>
+bool RedBlackTree<KeyType, Comparator>::IsRightChildRed(
+    Node *node) const noexcept {
+  return node->right && node->right->color == kRed &&
+         (!node->left || node->left->color == kBlack);
 }
 
 template <typename Key, typename Compare>
