@@ -10,7 +10,7 @@ enum Color { kRed, kBlack };
 
 template <typename Key, typename Compare = std::less<Key>>
 class RedBlackTree {
-public:
+ public:
   struct Node;
   struct Iterator;
   struct IteratorConst;
@@ -69,16 +69,18 @@ public:
   void SwapNode(Node *node_1, Node *node_2) noexcept;
   void UpdateParent(Node *node) noexcept;
   void BalanceForErase(Node *extracted_node) noexcept;
-  void BalanceRedSibling(Node *sibling, Node *extracted_node, Node *parent) noexcept;
-  bool BalanceBlackSiblingWithBlackChildren(Node *sibling, Node *extracted_node, Node *parent) noexcept;
-  void BalanceBlackSiblingWithOneBlackChild(Node *sibling, Node *extracted_node, Node *parent) noexcept;
+  void BalanceRedSibling(Node *sibling, Node *extracted_node,
+                         Node *parent) noexcept;
+  bool BalanceBlackSiblingWithBlackChildren(Node *sibling, Node *extracted_node,
+                                            Node *parent) noexcept;
+  void BalanceBlackSiblingWithOneBlackChild(Node *sibling, Node *extracted_node,
+                                            Node *parent) noexcept;
   bool isRed(Node *node) noexcept;
   bool IsChildrenBlack(Node *node) const noexcept;
   bool IsLeftChildRed(Node *node) const noexcept;
   bool IsRightChildRed(Node *node) const noexcept;
   Node *SearchMinNode(Node *node) const noexcept;
   Node *SearchMaxNode(Node *node) const noexcept;
-
 
   struct Node {
     Node()
