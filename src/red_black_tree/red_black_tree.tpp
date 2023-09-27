@@ -6,15 +6,17 @@ template <typename Key, typename Compare>
 RedBlackTree<Key, Compare>::RedBlackTree() : head(new Node), tree_size(0) {}
 
 template <typename Key, typename Compare>
-RedBlackTree<Key, Compare>::RedBlackTree(const RedBlackTree &other) {
+RedBlackTree<Key, Compare>::RedBlackTree(const RedBlackTree &other) : RedBlackTree() {
   if (other.GetSize() != 0) {
     CopyTree(other);
   }
 }
 
 template <typename Key, typename Compare>
-RedBlackTree<Key, Compare>::RedBlackTree(RedBlackTree &&other) noexcept {
-  SwapTree(other);
+RedBlackTree<Key, Compare>::RedBlackTree(RedBlackTree &&other) noexcept  : RedBlackTree() {
+  if (this != &other) {
+    SwapTree(other);
+  }
 }
 
 template <typename Key, typename Compare>
@@ -49,7 +51,7 @@ RedBlackTree<Key, Compare>::~RedBlackTree() {
 }
 
 template <typename Key, typename Compare>
-void RedBlackTree<Key, Compare>::CopyTree(const Node *other) {
+void RedBlackTree<Key, Compare>::CopyTree(const RedBlackTree &other) {
   Node *copy = CopyNode(other.GetRoot(), other.GetRoot()->parent);
 
   RemoveTree();
@@ -64,10 +66,6 @@ void RedBlackTree<Key, Compare>::CopyTree(const Node *other) {
 template <typename Key, typename Compare>
 typename RedBlackTree<Key, Compare>::Node *RedBlackTree<Key, Compare>::CopyNode(
     const Node *node, Node *parent) {
-  if (!node) {
-    return nullptr;
-  }
-
   Node *copy = new Node{node->key, node->color};
 
   try {
@@ -112,6 +110,12 @@ RedBlackTree<Key, Compare>::GetRoot() {
 }
 
 template <typename Key, typename Compare>
+const typename RedBlackTree<Key, Compare>::Node *
+RedBlackTree<Key, Compare>::GetRoot() const {
+  return head->parent;
+}
+
+template <typename Key, typename Compare>
 void RedBlackTree<Key, Compare>::SetRoot(Node *node) {
   head->parent = node;
 }
@@ -125,15 +129,15 @@ void RedBlackTree<Key, Compare>::SetupHead() {
 
 template <typename Key, typename Compare>
 typename RedBlackTree<Key, Compare>::size_type
-RedBlackTree<Key, Compare>::GetSize() {
+RedBlackTree<Key, Compare>::GetSize() const noexcept {
   return tree_size;
 }
 
 template <typename Key, typename Compare>
-void RedBlackTree<Key, Compare>::SwapTree(Node *node) {
-  std::swap(head, node.head);
-  std::swap(tree_size, node.tree_size);
-  std::swap(cmp, node.cmp);
+void RedBlackTree<Key, Compare>::SwapTree(RedBlackTree &other) {
+  std::swap(head, other.head);
+  std::swap(tree_size, other.tree_size);
+  std::swap(cmp, other.cmp);
 }
 
 template <typename Key, typename Compare>
@@ -203,14 +207,14 @@ RedBlackTree<Key, Compare>::InsertNode(Node *root, Node *new_node) {
 
   while (node) {
     parent = node;
-    int cmp_res = cmp(new_node->key, node->key);
-
-    if (cmp_res < 0) {
+    if (cmp(new_node->key, node->key)) {
       node = node->left;
-    } else if (cmp_res > 0) {
-      node = node->right;
     } else {
-      return {iterator(node), false};
+      if (cmp(node->key, new_node->key)) {
+        node = node->right;
+      } else {
+        return {iterator(node), false};
+      }
     }
   }
 
@@ -343,7 +347,7 @@ RedBlackTree<Key, Compare>::LowerBound(const_reference key) {
   Node *res = End().node_;
 
   while (current) {
-    if (cmp(key, current->key)) {
+    if (!cmp(current->key, key)) {
       res = current;
       current = current->left;
     } else {
@@ -403,17 +407,17 @@ void RedBlackTree<Key, Comparator>::Merge(RedBlackTree &other) {
     iterator other_end = other.End();
 
     while (other_begin != other_end) {
-      const Key &current_key = other_begin.node->key;
+      const Key &current_key = other_begin.node_->key;
       iterator it = Find(current_key);
 
       if (it == End()) {
         iterator tmp = other_begin;
-
+        ++other_begin;
         Node *moving_node = other.ExtractNode(tmp);
         InsertNode(GetRoot(), moving_node);
+      } else {
+        ++other_begin;
       }
-
-      ++other_begin;
     }
   }
 }
@@ -432,7 +436,7 @@ RedBlackTree<Key, Comparator>::ExtractNode(iterator position) noexcept {
     return nullptr;
   }
 
-  Node *extracted_node = position.node;
+  Node *extracted_node = position.node_;
 
   if (extracted_node->left && extracted_node->right) {
     PrepareNodeWithTwoChildren(extracted_node);
@@ -444,7 +448,7 @@ RedBlackTree<Key, Comparator>::ExtractNode(iterator position) noexcept {
 
   ExtractFromTree(extracted_node);
 
-  --tree_size;
+  tree_size--;
   extracted_node->ToDefault();
 
   return extracted_node;
@@ -452,14 +456,14 @@ RedBlackTree<Key, Comparator>::ExtractNode(iterator position) noexcept {
 
 template <typename Key, typename Comparator>
 void RedBlackTree<Key, Comparator>::PrepareNodeWithTwoChildren(Node *node) {
-  Node *replace = SearchMinimum(node->right);
+  Node *replace = SearchMinNode(node->right);
   SwapForErase(node, replace);
 }
 
 template <typename Key, typename Comparator>
 void RedBlackTree<Key, Comparator>::PrepareNodeWithoutChildren(Node *node) {
   if (node->color == kBlack) {
-    EraseBalancing(node);
+    BalanceForErase(node);
   }
 }
 
@@ -481,11 +485,11 @@ void RedBlackTree<Key, Comparator>::ExtractFromTree(Node *node) {
     }
 
     if (GetMinNode() == node) {
-      GetMinNode() = SearchMinimum(GetRoot());
+      SetMinNode(SearchMinNode(GetRoot()));
     }
 
     if (GetMaxNode() == node) {
-      GetMaxNode() = SearchMaximum(GetRoot());
+      SetMaxNode(SearchMaxNode(GetRoot()));
     }
   }
 }
@@ -555,6 +559,7 @@ void RedBlackTree<KeyType, Comparator>::BalanceForErase(
       }
     } else {
       BalanceBlackSiblingWithOneBlackChild(sibling, extracted_node, parent);
+      break;
     }
   }
 }
@@ -614,8 +619,6 @@ void RedBlackTree<KeyType, Comparator>::BalanceBlackSiblingWithOneBlackChild(
     parent->color = kBlack;
     RotateRight(parent);
   }
-
-  extracted_node->color = kBlack;
 }
 
 template <typename KeyType, typename Comparator>

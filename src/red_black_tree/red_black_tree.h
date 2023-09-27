@@ -30,15 +30,16 @@ class RedBlackTree {
   RedBlackTree &operator=(RedBlackTree &&other) noexcept;
   ~RedBlackTree();
 
-  void CopyTree(const Node *other);
+  void CopyTree(const RedBlackTree &other);
   Node *CopyNode(const Node *node, Node *parent);
   void RemoveNode(Node *node);
   void RemoveTree();
   Node *GetRoot();
+  const Node *GetRoot() const;
   void SetRoot(Node *node);
   void SetupHead();
-  size_type GetSize();
-  void SwapTree(Node *node);
+  size_type GetSize() const noexcept;
+  void SwapTree(RedBlackTree &other);
   Node *GetMinNode();
   Node *GetMaxNode();
   void SetMinNode(Node *node);
@@ -224,7 +225,7 @@ class RedBlackTree {
   struct IteratorConst {
     using iterator_category = std::forward_iterator_tag;
     using difference_type = std::ptrdiff_t;
-    using value_type = typename RedBlackTree<Key, Compare>::Node::key_type;
+    using value_type = typename RedBlackTree<Key, Compare>::key_type;
     using pointer = const value_type *;
     using reference = const value_type &;
 
