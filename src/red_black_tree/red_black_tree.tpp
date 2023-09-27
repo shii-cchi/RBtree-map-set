@@ -6,14 +6,16 @@ template <typename Key, typename Compare>
 RedBlackTree<Key, Compare>::RedBlackTree() : head(new Node), tree_size(0) {}
 
 template <typename Key, typename Compare>
-RedBlackTree<Key, Compare>::RedBlackTree(const RedBlackTree &other) : RedBlackTree() {
+RedBlackTree<Key, Compare>::RedBlackTree(const RedBlackTree &other)
+    : RedBlackTree() {
   if (other.GetSize() != 0) {
     CopyTree(other);
   }
 }
 
 template <typename Key, typename Compare>
-RedBlackTree<Key, Compare>::RedBlackTree(RedBlackTree &&other) noexcept  : RedBlackTree() {
+RedBlackTree<Key, Compare>::RedBlackTree(RedBlackTree &&other) noexcept
+    : RedBlackTree() {
   if (this != &other) {
     SwapTree(other);
   }
