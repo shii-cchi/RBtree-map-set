@@ -54,7 +54,7 @@ TEST(RedBlackTree, Constructors_4) {
   EXPECT_NE(tree_2.Find(2), tree_2.End());
 }
 
-TEST(RedBlackTree, Iterator) {
+TEST(RedBlackTree, Iterator_1) {
   s21::RedBlackTree<int> tree;
   for (int i = 5; i >= 0; --i) {
     tree.Insert(i);
@@ -73,6 +73,30 @@ TEST(RedBlackTree, Iterator) {
       --expectedValue;
     }
   }
+}
+
+TEST(RedBlackTree, Iterator_2) {
+  s21::RedBlackTree<int> tree;
+  tree.Insert(2);
+  tree.Insert(1);
+  tree.Insert(4);
+  tree.Insert(5);
+  tree.Insert(3);
+  tree.Insert(6);
+    tree.Insert(7);
+  tree.Insert(8);
+
+  auto it = tree.Find(9);
+  it++;
+  EXPECT_EQ(*it, 1);
+
+  it = tree.Find(4);
+  it++;
+  EXPECT_EQ(*it, 5);
+
+  it = tree.Find(1);
+  it--;
+  EXPECT_EQ(it, tree.End());
 }
 
 TEST(RedBlackTree, IteratorConst) {
@@ -109,7 +133,7 @@ TEST(RedBlackTree, isEmpty_GetSize) {
   EXPECT_TRUE(tree.GetSize() == 1);
 }
 
-TEST(RedBlackTree, Insert_Find) {
+TEST(RedBlackTree, Insert_Find_1) {
   s21::RedBlackTree<int> tree;
   tree.Insert(2);
   tree.Insert(5);
@@ -123,6 +147,36 @@ TEST(RedBlackTree, Insert_Find) {
   EXPECT_NE(tree.Find(3), tree.End());
   EXPECT_NE(tree.Find(5), tree.End());
   EXPECT_EQ(tree.Find(7), tree.End());
+}
+
+TEST(RedBlackTree, Insert_Find_2) {
+  s21::RedBlackTree<int> tree;
+  tree.Insert(7);
+  tree.Insert(2);
+  tree.Insert(3);
+  tree.Insert(1);
+  EXPECT_NE(tree.Find(7), tree.End());
+  EXPECT_NE(tree.Find(2), tree.End());
+  EXPECT_NE(tree.Find(3), tree.End());
+  EXPECT_NE(tree.Find(1), tree.End());
+}
+
+TEST(RedBlackTree, Insert_Find_3) {
+  s21::RedBlackTree<int> tree;
+  tree.Insert(9);
+  tree.Insert(8);
+  tree.Insert(1);
+  tree.Insert(4);
+  tree.Insert(2);
+  tree.Insert(3);
+  tree.Insert(10);
+  tree.Insert(11);
+  tree.Insert(18);
+  tree.Insert(19);
+  tree.Insert(14);
+  tree.Insert(12);
+  tree.Insert(13);
+  EXPECT_NE(tree.Find(13), tree.End());
 }
 
 TEST(RedBlackTree, Merge_1) {
