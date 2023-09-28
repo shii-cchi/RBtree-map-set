@@ -62,9 +62,7 @@ class RedBlackTree {
   void Merge(RedBlackTree &other);
   void Erase(iterator position) noexcept;
   Node *ExtractNode(iterator position) noexcept;
-  void PrepareNodeWithTwoChildren(Node *node);
-  void PrepareNodeWithoutChildren(Node *node);
-  void PrepareNodeWithOneChild(Node *node);
+  void UpdateParam(Node *node);
   void ExtractFromTree(Node *node);
   void SwapForErase(Node *node, Node *other) noexcept;
   void SwapNode(Node *node_1, Node *node_2) noexcept;
@@ -82,6 +80,10 @@ class RedBlackTree {
   bool IsRightChildRed(Node *node) const noexcept;
   Node *SearchMinNode(Node *node) const noexcept;
   Node *SearchMaxNode(Node *node) const noexcept;
+
+  bool CheckTree() const noexcept;
+  bool CheckRedNodes(const Node *node) const noexcept;
+  int CheckBlackHeight(const Node *node) const noexcept;
 
   struct Node {
     Node()

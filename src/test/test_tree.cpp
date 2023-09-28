@@ -2,6 +2,7 @@
 
 #include "../red_black_tree/red_black_tree.h"
 #include "../red_black_tree/red_black_tree.tpp"
+//#include "../red_black_tree/s21_tree.h"
 
 TEST(RedBlackTree, Constructors_1) {
   s21::RedBlackTree<int> tree_1;
@@ -83,7 +84,7 @@ TEST(RedBlackTree, Iterator_2) {
   tree.Insert(5);
   tree.Insert(3);
   tree.Insert(6);
-    tree.Insert(7);
+  tree.Insert(7);
   tree.Insert(8);
 
   auto it = tree.Find(9);
@@ -145,8 +146,11 @@ TEST(RedBlackTree, Insert_Find_1) {
   EXPECT_FALSE(tree.isEmpty());
   EXPECT_TRUE(tree.GetSize() == 5);
   EXPECT_NE(tree.Find(3), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
   EXPECT_NE(tree.Find(5), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
   EXPECT_EQ(tree.Find(7), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
 }
 
 TEST(RedBlackTree, Insert_Find_2) {
@@ -159,6 +163,7 @@ TEST(RedBlackTree, Insert_Find_2) {
   EXPECT_NE(tree.Find(2), tree.End());
   EXPECT_NE(tree.Find(3), tree.End());
   EXPECT_NE(tree.Find(1), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
 }
 
 TEST(RedBlackTree, Insert_Find_3) {
@@ -177,6 +182,7 @@ TEST(RedBlackTree, Insert_Find_3) {
   tree.Insert(12);
   tree.Insert(13);
   EXPECT_NE(tree.Find(13), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
 }
 
 TEST(RedBlackTree, Merge_1) {
@@ -193,6 +199,8 @@ TEST(RedBlackTree, Merge_1) {
   EXPECT_NE(tree_1.Find(5), tree_1.End());
   EXPECT_NE(tree_2.Find(2), tree_2.End());
   EXPECT_NE(tree_2.Find(5), tree_2.End());
+  EXPECT_EQ(tree_1.CheckTree(), true);
+  EXPECT_EQ(tree_2.CheckTree(), true);
 }
 
 TEST(RedBlackTree, Merge_2) {
@@ -211,6 +219,8 @@ TEST(RedBlackTree, Merge_2) {
   EXPECT_NE(tree_1.Find(5), tree_1.End());
   EXPECT_EQ(tree_2.Find(1), tree_2.End());
   EXPECT_EQ(tree_2.Find(4), tree_2.End());
+  EXPECT_EQ(tree_1.CheckTree(), true);
+  EXPECT_EQ(tree_2.CheckTree(), true);
 }
 
 TEST(RedBlackTree, Erase_1) {
@@ -220,6 +230,7 @@ TEST(RedBlackTree, Erase_1) {
   tree.Erase(tree.Find(3));
   tree.Erase(tree.Find(2));
   EXPECT_EQ(tree.Find(2), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
 }
 
 TEST(RedBlackTree, Erase_2) {
@@ -229,6 +240,7 @@ TEST(RedBlackTree, Erase_2) {
   tree.Insert(1);
   tree.Erase(tree.Find(2));
   EXPECT_EQ(tree.Find(2), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
 }
 
 TEST(RedBlackTree, Erase_3) {
@@ -241,17 +253,68 @@ TEST(RedBlackTree, Erase_3) {
   tree.Insert(7);
   tree.Erase(tree.Find(3));
   EXPECT_EQ(tree.Find(3), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
   tree.Erase(tree.Find(4));
   EXPECT_EQ(tree.Find(4), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
   tree.Erase(tree.Find(7));
   EXPECT_EQ(tree.Find(7), tree.End());
-  // tree.Erase(tree.Find(1));
-  // EXPECT_EQ(tree.Find(1), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+  tree.Erase(tree.Find(1));
+  EXPECT_EQ(tree.Find(1), tree.End());
+  // EXPECT_EQ(tree.CheckTree(), true);
 }
 
-// TEST(RedBlackTree, Merge_2) {
+TEST(RedBlackTree, Erase_4) {
+  s21::RedBlackTree<int> tree;
+  tree.Insert(1);
+  tree.Insert(9);
+  tree.Insert(7);
+  tree.Insert(4);
+  tree.Insert(3);
+  tree.Insert(5);
+  tree.Insert(6);
+  tree.Insert(8);
+  tree.Erase(tree.Find(3));
+  EXPECT_EQ(tree.Find(3), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+  tree.Erase(tree.Find(4));
+  EXPECT_EQ(tree.Find(4), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+  tree.Erase(tree.Find(7));
+  EXPECT_EQ(tree.Find(7), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+  tree.Erase(tree.Find(1));
+  EXPECT_EQ(tree.Find(1), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+  tree.Erase(tree.Find(8));
+  EXPECT_EQ(tree.Find(8), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+  tree.Erase(tree.Find(9));
+  EXPECT_EQ(tree.Find(9), tree.End());
+  // EXPECT_EQ(tree.CheckTree(), true);
+}
 
-// }
+TEST(RedBlackTree, Erase_5) {
+  s21::RedBlackTree<int> tree;
+  tree.Insert(10);
+  tree.Insert(2);
+  tree.Insert(3);
+  tree.Insert(9);
+  tree.Insert(5);
+  tree.Insert(1);
+  tree.Insert(7);
+  tree.Insert(4);
+  tree.Erase(tree.Find(7));
+  EXPECT_EQ(tree.Find(7), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+  tree.Erase(tree.Find(3));
+  EXPECT_EQ(tree.Find(3), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+  tree.Erase(tree.Find(2));
+  EXPECT_EQ(tree.Find(2), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+}
 
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
