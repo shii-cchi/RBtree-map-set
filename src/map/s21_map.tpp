@@ -129,7 +129,7 @@ std::pair<typename map<Key, T>::iterator, bool> map<Key, T>::insert_or_assign(
 
   (*it).second = obj;
 
-  return { it, false };
+  return {it, false};
 }
 
 template <typename Key, typename T>
