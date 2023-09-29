@@ -1,4 +1,4 @@
-#include "red_black_tree.h"
+#include "s21_red_black_tree.h"
 
 namespace s21 {
 
@@ -171,7 +171,7 @@ bool RedBlackTree<Key, Compare>::isEmpty() {
 
 template <typename Key, typename Compare>
 typename RedBlackTree<Key, Compare>::size_type
-RedBlackTree<Key, Compare>::MaxSize() const noexcept {
+RedBlackTree<Key, Compare>::GetMaxSize() const noexcept {
   return ((std::numeric_limits<size_type>::max() / 2) - sizeof(RedBlackTree) -
           sizeof(Node)) /
          sizeof(Node);

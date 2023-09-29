@@ -1,5 +1,5 @@
-#ifndef CPP2_S21_CONTAINERS_RED_BLACK_TREE_RED_BLACK_TREE_H_
-#define CPP2_S21_CONTAINERS_RED_BLACK_TREE_RED_BLACK_TREE_H_
+#ifndef CPP2_S21_CONTAINERS_RED_BLACK_TREE_S21_RED_BLACK_TREE_H_
+#define CPP2_S21_CONTAINERS_RED_BLACK_TREE_S21_RED_BLACK_TREE_H_
 
 #include <functional>
 #include <limits>
@@ -45,7 +45,7 @@ class RedBlackTree {
   void SetMinNode(Node *node);
   void SetMaxNode(Node *node);
   bool isEmpty();
-  size_type MaxSize() const noexcept;
+  size_type GetMaxSize() const noexcept;
   iterator Insert(const key_type key);
   std::pair<iterator, bool> InsertNode(Node *root, Node *new_node);
   void BalanceTree(Node *node);
@@ -281,4 +281,4 @@ class RedBlackTree {
 
 }  // namespace s21
 
-#endif  // CPP2_S21_CONTAINERS_RED_BLACK_TREE_RED_BLACK_TREE_H_
+#endif  // CPP2_S21_CONTAINERS_RED_BLACK_TREE_S21_RED_BLACK_TREE_H_
