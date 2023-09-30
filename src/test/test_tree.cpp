@@ -2,7 +2,7 @@
 
 #include "../red_black_tree/s21_red_black_tree.h"
 #include "../red_black_tree/s21_red_black_tree.tpp"
-//#include "../red_black_tree/s21_tree.h"
+// #include "../red_black_tree/s21_tree.h"
 
 TEST(RedBlackTree, Constructors_1) {
   s21::RedBlackTree<int> tree_1;
@@ -262,7 +262,7 @@ TEST(RedBlackTree, Erase_3) {
   EXPECT_EQ(tree.CheckTree(), true);
   tree.Erase(tree.Find(1));
   EXPECT_EQ(tree.Find(1), tree.End());
-  // EXPECT_EQ(tree.CheckTree(), true);
+  EXPECT_EQ(tree.CheckTree(), true);
 }
 
 TEST(RedBlackTree, Erase_4) {
@@ -292,7 +292,13 @@ TEST(RedBlackTree, Erase_4) {
   EXPECT_EQ(tree.CheckTree(), true);
   tree.Erase(tree.Find(9));
   EXPECT_EQ(tree.Find(9), tree.End());
-  // EXPECT_EQ(tree.CheckTree(), true);
+  EXPECT_EQ(tree.CheckTree(), true);
+  tree.Erase(tree.Find(5));
+  EXPECT_EQ(tree.Find(5), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+  tree.Erase(tree.Find(6));
+  EXPECT_EQ(tree.Find(6), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
 }
 
 TEST(RedBlackTree, Erase_5) {

@@ -70,9 +70,9 @@ class RedBlackTree {
   void BalanceForErase(Node *extracted_node) noexcept;
   void BalanceRedSibling(Node *sibling, Node *extracted_node,
                          Node *parent) noexcept;
-  bool BalanceBlackSiblingWithBlackChildren(Node *sibling, Node *extracted_node,
-                                            Node *parent) noexcept;
-  void BalanceBlackSiblingWithOneBlackChild(Node *sibling, Node *extracted_node,
+  void BalanceBlackSiblingWithOneBlackChild(Node *sibling, Node *sibling_left,
+                                            Node *sibling_right,
+                                            Node *extracted_node,
                                             Node *parent) noexcept;
   bool isRed(Node *node) noexcept;
   bool IsChildrenBlack(Node *node) const noexcept;
