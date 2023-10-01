@@ -61,7 +61,8 @@ class map {
 
   bool contains(const key_type &key) const noexcept;
 
-  // bool operator==(const map &other) const;
+  bool operator==(const map &other) const;
+
  private:
   RedBlackTree<value_type, MapCompare> *tree;
 };

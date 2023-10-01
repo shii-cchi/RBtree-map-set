@@ -2,7 +2,6 @@
 
 #include "../red_black_tree/s21_red_black_tree.h"
 #include "../red_black_tree/s21_red_black_tree.tpp"
-// #include "../red_black_tree/s21_tree.h"
 
 TEST(RedBlackTree, Constructors_1) {
   s21::RedBlackTree<int> tree_1;

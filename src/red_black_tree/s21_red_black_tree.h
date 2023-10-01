@@ -46,7 +46,7 @@ class RedBlackTree {
   void SetMaxNode(Node *node);
   bool isEmpty();
   size_type GetMaxSize() const noexcept;
-  iterator Insert(const key_type key);
+  std::pair<iterator, bool> Insert(const key_type key);
   std::pair<iterator, bool> InsertNode(Node *root, Node *new_node);
   void BalanceTree(Node *node);
   void RotateLeft(Node *node);

@@ -178,19 +178,18 @@ RedBlackTree<Key, Compare>::GetMaxSize() const noexcept {
 }
 
 template <typename Key, typename Compare>
-typename RedBlackTree<Key, Compare>::iterator
+std::pair<typename RedBlackTree<Key, Compare>::iterator, bool>
 RedBlackTree<Key, Compare>::Insert(const key_type key) {
   Node *new_node = new Node{key};
 
-  auto res = InsertNode(head->parent, new_node);
-  iterator it = res.first;
+  auto res = InsertNode(GetRoot(), new_node);
   bool is_inserted = res.second;
 
   if (!is_inserted) {
     delete new_node;
   }
 
-  return it;
+  return res;
 }
 
 template <typename Key, typename Compare>

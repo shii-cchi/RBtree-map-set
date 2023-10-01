@@ -6,7 +6,7 @@ template <typename Key, typename T>
 map<Key, T>::map() : tree(new tree_type{}) {}
 
 template <typename Key, typename T>
-map<Key, T>::map(std::initializer_list<value_type> const &items) {
+map<Key, T>::map(std::initializer_list<value_type> const &items) : map() {
   for (auto i : items) {
     insert(i);
   }
@@ -39,13 +39,13 @@ map<Key, T> &map<Key, T>::operator=(map &&other) noexcept {
 
 template <typename Key, typename T>
 typename map<Key, T>::mapped_type &map<Key, T>::at(const key_type &key) {
-  iterator it = tree->Find(key);
+  iterator it = tree->Find({key, mapped_type{}});
 
   if (it == end()) {
     throw std::out_of_range("Element with the specified key not found");
   }
 
-  return it->second;
+  return (*it).second;
 }
 
 template <typename Key, typename T>
@@ -57,12 +57,13 @@ const typename map<Key, T>::mapped_type &map<Key, T>::at(
 template <typename Key, typename T>
 typename map<Key, T>::mapped_type &map<Key, T>::operator[](
     const key_type &key) {
-  iterator it = tree->Find(key);
+  iterator it_search = tree->Find({key, mapped_type{}});
 
-  if (it == end()) {
-    return insert(key).second;
+  if (it_search == end()) {
+    std::pair<iterator, bool> res = insert({key, mapped_type{}});
+    return (*res.first).second;
   } else {
-    return it->second;
+    return (*it_search).second;
   }
 }
 
@@ -121,7 +122,7 @@ std::pair<typename map<Key, T>::iterator, bool> map<Key, T>::insert(
 template <typename Key, typename T>
 std::pair<typename map<Key, T>::iterator, bool> map<Key, T>::insert_or_assign(
     const key_type &key, const mapped_type &obj) {
-  iterator it = tree->Find(key);
+  iterator it = tree->Find({key, mapped_type{}});
 
   if (it == end()) {
     return tree->Insert(value_type{key, obj});
@@ -149,9 +150,28 @@ void map<Key, T>::merge(map &other) noexcept {
 
 template <typename Key, typename T>
 bool map<Key, T>::contains(const key_type &key) const noexcept {
-  iterator it = tree->Find(key);
+  iterator it = tree->Find({key, mapped_type{}});
 
   return it != end();
+}
+
+template <typename Key, typename T>
+bool map<Key, T>::operator==(const map &other) const {
+  if (this == &other) return true;
+
+  if (size() != other.size()) return false;
+
+  auto it_1 = begin();
+  auto it_2 = other.begin();
+
+  while (it_1 != end()) {
+    if (*it_1 != *it_2) return false;
+
+    ++it_1;
+    ++it_2;
+  }
+
+  return true;
 }
 
 }  // namespace s21
