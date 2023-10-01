@@ -553,7 +553,10 @@ void RedBlackTree<KeyType, Comparator>::BalanceForErase(
 
     if (sibling == parent->right) {
       if (isRed(sibling)) {
-        BalanceRedSibling(sibling, extracted_node, parent);
+        std::swap(sibling->color, parent->color);
+        RotateLeft(parent);
+        parent = extracted_node->parent;
+        sibling = parent->right;
       }
 
       if (!isRed(sibling) && IsChildrenBlack(sibling)) {
@@ -579,7 +582,10 @@ void RedBlackTree<KeyType, Comparator>::BalanceForErase(
       }
     } else {
       if (isRed(sibling)) {
-        BalanceRedSibling(sibling, extracted_node, parent);
+        std::swap(sibling->color, parent->color);
+        RotateRight(parent);
+        parent = extracted_node->parent;
+        sibling = parent->left;
       }
 
       if (!isRed(sibling) && IsChildrenBlack(sibling)) {
@@ -604,22 +610,6 @@ void RedBlackTree<KeyType, Comparator>::BalanceForErase(
         break;
       }
     }
-  }
-}
-
-template <typename KeyType, typename Comparator>
-void RedBlackTree<KeyType, Comparator>::BalanceRedSibling(
-    Node *sibling, Node *extracted_node, Node *parent) noexcept {
-  if (sibling == parent->right) {
-    std::swap(sibling->color, parent->color);
-    RotateLeft(parent);
-    parent = extracted_node->parent;
-    sibling = parent->right;
-  } else {
-    std::swap(sibling->color, parent->color);
-    RotateRight(parent);
-    parent = extracted_node->parent;
-    sibling = parent->left;
   }
 }
 

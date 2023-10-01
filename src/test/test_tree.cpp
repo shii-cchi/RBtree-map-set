@@ -238,16 +238,6 @@ TEST(RedBlackTree, Erase_2) {
   tree.Insert(2);
   tree.Insert(5);
   tree.Insert(1);
-  tree.Erase(tree.Find(2));
-  EXPECT_EQ(tree.Find(2), tree.End());
-  EXPECT_EQ(tree.CheckTree(), true);
-}
-
-TEST(RedBlackTree, Erase_3) {
-  s21::RedBlackTree<int> tree;
-  tree.Insert(2);
-  tree.Insert(5);
-  tree.Insert(1);
   tree.Insert(4);
   tree.Insert(3);
   tree.Insert(7);
@@ -265,7 +255,7 @@ TEST(RedBlackTree, Erase_3) {
   EXPECT_EQ(tree.CheckTree(), true);
 }
 
-TEST(RedBlackTree, Erase_4) {
+TEST(RedBlackTree, Erase_3) {
   s21::RedBlackTree<int> tree;
   tree.Insert(1);
   tree.Insert(9);
@@ -301,7 +291,7 @@ TEST(RedBlackTree, Erase_4) {
   EXPECT_EQ(tree.CheckTree(), true);
 }
 
-TEST(RedBlackTree, Erase_5) {
+TEST(RedBlackTree, Erase_4) {
   s21::RedBlackTree<int> tree;
   tree.Insert(10);
   tree.Insert(2);
@@ -319,6 +309,86 @@ TEST(RedBlackTree, Erase_5) {
   EXPECT_EQ(tree.CheckTree(), true);
   tree.Erase(tree.Find(2));
   EXPECT_EQ(tree.Find(2), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+  tree.Erase(tree.Find(10));
+  EXPECT_EQ(tree.Find(10), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+  tree.Erase(tree.Find(9));
+  EXPECT_EQ(tree.Find(9), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+  tree.Erase(tree.Find(1));
+  EXPECT_EQ(tree.Find(1), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+  tree.Erase(tree.Find(4));
+  EXPECT_EQ(tree.Find(4), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+  tree.Erase(tree.Find(5));
+  EXPECT_EQ(tree.Find(5), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+}
+
+TEST(RedBlackTree, Erase_5) {
+  s21::RedBlackTree<int> tree;
+  tree.Insert(1);
+  tree.Insert(2);
+  tree.Insert(3);
+  tree.Insert(4);
+  tree.Insert(5);
+  tree.Insert(6);
+  tree.Erase(tree.Find(1));
+  EXPECT_EQ(tree.Find(1), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+  tree.Erase(tree.Find(2));
+  EXPECT_EQ(tree.Find(2), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+  tree.Erase(tree.Find(3));
+  EXPECT_EQ(tree.Find(3), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+  tree.Erase(tree.Find(4));
+  EXPECT_EQ(tree.Find(4), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+  tree.Erase(tree.Find(5));
+  EXPECT_EQ(tree.Find(5), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+  tree.Erase(tree.Find(6));
+  EXPECT_EQ(tree.Find(6), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+}
+
+TEST(RedBlackTree, Erase_6) {
+  s21::RedBlackTree<int> tree;
+  tree.Insert(9);
+  tree.Insert(1);
+  tree.Insert(3);
+  tree.Insert(7);
+  tree.Insert(11);
+  tree.Insert(5);
+  tree.Insert(6);
+  tree.Insert(2);
+  tree.Insert(4);
+  tree.Insert(8);
+  tree.Insert(12);
+  tree.Insert(13);
+  tree.Erase(tree.Find(12));
+  EXPECT_EQ(tree.Find(12), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+  tree.Erase(tree.Find(5));
+  EXPECT_EQ(tree.Find(5), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+  tree.Erase(tree.Find(8));
+  EXPECT_EQ(tree.Find(8), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+  tree.Erase(tree.Find(7));
+  EXPECT_EQ(tree.Find(7), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+  tree.Erase(tree.Find(11));
+  EXPECT_EQ(tree.Find(11), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+  tree.Erase(tree.Find(9));
+  EXPECT_EQ(tree.Find(9), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+  tree.Erase(tree.Find(6));
+  EXPECT_EQ(tree.Find(6), tree.End());
   EXPECT_EQ(tree.CheckTree(), true);
 }
 
