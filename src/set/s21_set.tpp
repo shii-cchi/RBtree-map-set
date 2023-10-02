@@ -6,7 +6,7 @@ template <typename Key>
 set<Key>::set() : tree(new tree_type{}) {}
 
 template <typename Key>
-set<Key>::set(std::initializer_list<value_type> const &items) {
+set<Key>::set(std::initializer_list<value_type> const &items) : set() {
   for (auto i : items) {
     insert(i);
   }
@@ -109,5 +109,25 @@ bool set<Key>::contains(const key_type &key) const noexcept {
 
   return it != end();
 }
+
+template <typename Key>
+bool set<Key>::operator==(const set &other) const {
+  if (this == &other) return true;
+
+  if (size() != other.size()) return false;
+
+  auto it_1 = begin();
+  auto it_2 = other.begin();
+
+  while (it_1 != end()) {
+    if (*it_1 != *it_2) return false;
+
+    ++it_1;
+    ++it_2;
+  }
+
+  return true;
+}
+
 
 }  // namespace s21

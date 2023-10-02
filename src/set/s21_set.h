@@ -45,7 +45,7 @@ class set {
   iterator find(const key_type &key) const noexcept;
   bool contains(const key_type &key) const noexcept;
 
-  // bool operator==(const set &other) const;
+  bool operator==(const set &other) const;
  private:
   RedBlackTree<value_type> *tree;
 };
