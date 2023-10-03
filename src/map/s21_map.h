@@ -4,7 +4,6 @@
 #include <stdexcept>
 
 #include "../red_black_tree/s21_red_black_tree.h"
-#include "../red_black_tree/s21_red_black_tree.tpp"
 
 namespace s21 {
 template <typename Key, typename T>
@@ -69,4 +68,5 @@ class map {
 
 }  // namespace s21
 
+#include "s21_map.tpp"
 #endif  // CPP2_S21_CONTAINERS_MAP_S21_MAP_H_

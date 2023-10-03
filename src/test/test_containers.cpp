@@ -1,7 +1,9 @@
 #include <gtest/gtest.h>
 
-#include "../red_black_tree/s21_red_black_tree.h"
-#include "../red_black_tree/s21_red_black_tree.tpp"
+#include "../map/s21_map.h"
+#include "../set/s21_set.h"
+
+// TREE//
 
 TEST(RedBlackTree, Constructors_1) {
   s21::RedBlackTree<int> tree_1;
@@ -389,6 +391,267 @@ TEST(RedBlackTree, Erase_6) {
   tree.Erase(tree.Find(6));
   EXPECT_EQ(tree.Find(6), tree.End());
   EXPECT_EQ(tree.CheckTree(), true);
+}
+
+// MAP//
+
+TEST(Map, Constructors_1) {
+  s21::map<int, std::string> map_1;
+  EXPECT_TRUE(map_1.size() == 0);
+  EXPECT_TRUE(map_1.empty());
+
+  s21::map<int, std::string> map_2{{1, "1"}, {2, "2"}};
+  EXPECT_TRUE(map_2.size() == 2);
+  EXPECT_TRUE(map_2.contains(1));
+  EXPECT_TRUE(map_2.contains(2));
+
+  s21::map<int, std::string> map_3(map_2);
+  EXPECT_TRUE(map_3.size() == 2);
+  EXPECT_TRUE(map_3.contains(1));
+  EXPECT_TRUE(map_3.contains(2));
+  EXPECT_TRUE(map_2 == map_3);
+
+  s21::map<int, std::string> map_4(std::move(map_2));
+  EXPECT_TRUE(map_4.size() == 2);
+  EXPECT_TRUE(map_4.contains(1));
+  EXPECT_TRUE(map_4.contains(2));
+  EXPECT_TRUE(map_2.size() == 0);
+}
+
+TEST(Map, Constructors_2) {
+  s21::map<int, std::string> map_1{{1, "1"}, {2, "2"}};
+
+  s21::map<int, std::string> map_2;
+  map_2 = map_1;
+  EXPECT_TRUE(map_2.size() == 2);
+  EXPECT_TRUE(map_2.contains(1));
+  EXPECT_TRUE(map_2.contains(2));
+  EXPECT_TRUE(map_1 == map_2);
+
+  s21::map<int, std::string> map_3;
+  map_3 = std::move(map_1);
+  EXPECT_TRUE(map_3.size() == 2);
+  EXPECT_TRUE(map_3.contains(1));
+  EXPECT_TRUE(map_3.contains(2));
+  EXPECT_TRUE(map_1.size() == 0);
+}
+
+TEST(Map, At) {
+  s21::map<int, std::string> map{{1, "1"}, {2, "2"}};
+  EXPECT_TRUE(map.at(1) == "1");
+  EXPECT_TRUE(map.at(2) == "2");
+  EXPECT_THROW(map.at(3), std::out_of_range);
+
+  const s21::map<int, std::string> map_1{{1, "1"}, {2, "2"}};
+  EXPECT_TRUE(map_1.at(1) == "1");
+  EXPECT_TRUE(map_1.at(2) == "2");
+  EXPECT_THROW(map_1.at(3), std::out_of_range);
+}
+
+TEST(Map, Brackets) {
+  s21::map<int, std::string> map{{1, "1"}, {2, "2"}};
+  EXPECT_TRUE(map[1] == "1");
+  EXPECT_TRUE(map[2] == "2");
+  EXPECT_TRUE(map[3] == "");
+
+  map.clear();
+  EXPECT_TRUE(map.size() == 0);
+  EXPECT_TRUE(map.empty());
+}
+
+TEST(Map, Insert) {
+  s21::map<int, std::string> map;
+  EXPECT_TRUE(map.insert(1, "1").second);
+  EXPECT_TRUE(map.insert(2, "2").second);
+  EXPECT_TRUE(map.insert(3, "3").second);
+  EXPECT_FALSE(map.insert(3, "4").second);
+  EXPECT_TRUE(map[1] == "1");
+  EXPECT_TRUE(map[2] == "2");
+  EXPECT_TRUE(map[3] == "3");
+}
+
+TEST(Map, InsertOrAssign) {
+  s21::map<int, std::string> map;
+  EXPECT_TRUE(map.insert_or_assign(1, "1").second);
+  EXPECT_TRUE(map.insert_or_assign(2, "2").second);
+  EXPECT_TRUE(map.insert_or_assign(3, "3").second);
+  EXPECT_FALSE(map.insert_or_assign(3, "4").second);
+  EXPECT_TRUE(map[1] == "1");
+  EXPECT_TRUE(map[2] == "2");
+  EXPECT_TRUE(map[3] == "4");
+}
+
+TEST(Map, Erase_1) {
+  s21::map<int, std::string> map;
+  EXPECT_TRUE(map.insert(1, "1").second);
+  EXPECT_TRUE(map[1] == "1");
+  map.erase(map.begin());
+  EXPECT_TRUE(map.size() == 0);
+  EXPECT_TRUE(map.empty());
+}
+
+TEST(Map, Erase_2) {
+  s21::map<int, std::string> map;
+  EXPECT_TRUE(map.insert(1, "1").second);
+  EXPECT_TRUE(map.insert(2, "2").second);
+  EXPECT_TRUE(map.insert(3, "3").second);
+  EXPECT_TRUE(map[1] == "1");
+  EXPECT_TRUE(map[2] == "2");
+  EXPECT_TRUE(map[3] == "3");
+  map.erase(map.insert_or_assign(1, "1").first);
+  map.erase(map.insert_or_assign(2, "2").first);
+  map.erase(map.insert_or_assign(3, "3").first);
+  EXPECT_TRUE(map.size() == 0);
+}
+
+TEST(Map, Swap) {
+  s21::map<int, std::string> map_1;
+  EXPECT_TRUE(map_1.insert(1, "1").second);
+  EXPECT_TRUE(map_1.insert(2, "2").second);
+  EXPECT_TRUE(map_1.insert(3, "3").second);
+
+  s21::map<int, std::string> map_2;
+  map_2.swap(map_1);
+
+  EXPECT_TRUE(map_2[1] == "1");
+  EXPECT_TRUE(map_2[2] == "2");
+  EXPECT_TRUE(map_2[3] == "3");
+  EXPECT_TRUE(map_1.size() == 0);
+}
+
+TEST(Map, Merge) {
+  s21::map<int, std::string> map_1;
+  EXPECT_TRUE(map_1.insert(1, "1").second);
+
+  s21::map<int, std::string> map_2;
+  EXPECT_TRUE(map_2.insert(2, "2").second);
+  EXPECT_TRUE(map_2.insert(3, "3").second);
+
+  map_1.merge(map_2);
+  EXPECT_TRUE(map_1[1] == "1");
+  EXPECT_TRUE(map_1[2] == "2");
+  EXPECT_TRUE(map_1[3] == "3");
+  EXPECT_TRUE(map_2.size() == 0);
+  EXPECT_TRUE(map_2.empty());
+}
+
+// SET//
+
+TEST(Set, Constructors_1) {
+  s21::set<int> set_1;
+  EXPECT_TRUE(set_1.size() == 0);
+  EXPECT_TRUE(set_1.empty());
+
+  s21::set<int> set_2{1, 2};
+  EXPECT_TRUE(set_2.size() == 2);
+  EXPECT_TRUE(set_2.contains(1));
+  EXPECT_TRUE(set_2.contains(2));
+
+  s21::set<int> set_3(set_2);
+  EXPECT_TRUE(set_3.size() == 2);
+  EXPECT_TRUE(set_3.contains(1));
+  EXPECT_TRUE(set_3.contains(2));
+  EXPECT_TRUE(set_2 == set_3);
+
+  s21::set<int> set_4(std::move(set_2));
+  EXPECT_TRUE(set_4.size() == 2);
+  EXPECT_TRUE(set_4.contains(1));
+  EXPECT_TRUE(set_4.contains(2));
+  EXPECT_TRUE(set_2.size() == 0);
+}
+
+TEST(Set, Constructors_2) {
+  s21::set<int> set_1{1, 2};
+
+  s21::set<int> set_2;
+  set_2 = set_1;
+  EXPECT_TRUE(set_2.size() == 2);
+  EXPECT_TRUE(set_2.contains(1));
+  EXPECT_TRUE(set_2.contains(2));
+  EXPECT_TRUE(set_1 == set_2);
+
+  s21::set<int> set_3;
+  set_3 = std::move(set_1);
+  EXPECT_TRUE(set_3.size() == 2);
+  EXPECT_TRUE(set_3.contains(1));
+  EXPECT_TRUE(set_3.contains(2));
+  EXPECT_TRUE(set_1.size() == 0);
+}
+
+TEST(Set, Clear) {
+  s21::set<int> set{1, 2};
+  EXPECT_TRUE(set.contains(1));
+  EXPECT_TRUE(set.contains(2));
+  set.clear();
+  EXPECT_TRUE(set.size() == 0);
+  EXPECT_TRUE(set.empty());
+}
+
+TEST(Set, Insert) {
+  s21::set<int> set;
+  EXPECT_TRUE(set.insert(1).second);
+  EXPECT_TRUE(set.insert(2).second);
+  EXPECT_TRUE(set.insert(3).second);
+  EXPECT_FALSE(set.insert(3).second);
+  EXPECT_TRUE(set.contains(1));
+  EXPECT_TRUE(set.contains(2));
+  EXPECT_TRUE(set.contains(3));
+}
+
+TEST(Set, Erase_1) {
+  s21::set<int> set;
+  EXPECT_TRUE(set.insert(1).second);
+  EXPECT_TRUE(set.contains(1));
+  set.erase(set.begin());
+  EXPECT_TRUE(set.size() == 0);
+  EXPECT_TRUE(set.empty());
+}
+
+TEST(Set, Erase_2) {
+  s21::set<int> set;
+  EXPECT_TRUE(set.insert(1).second);
+  EXPECT_TRUE(set.insert(2).second);
+  EXPECT_TRUE(set.insert(3).second);
+  EXPECT_TRUE(set.contains(1));
+  EXPECT_TRUE(set.contains(2));
+  EXPECT_TRUE(set.contains(3));
+  set.erase(set.find(1));
+  EXPECT_EQ(set.find(1), set.end());
+  set.erase(set.find(2));
+  EXPECT_EQ(set.find(2), set.end());
+  set.erase(set.find(3));
+  EXPECT_EQ(set.find(3), set.end());
+  EXPECT_TRUE(set.size() == 0);
+}
+
+TEST(Set, Swap) {
+  s21::set<int> set_1;
+  EXPECT_TRUE(set_1.insert(1).second);
+  EXPECT_TRUE(set_1.insert(2).second);
+  EXPECT_TRUE(set_1.insert(3).second);
+
+  s21::set<int> set_2;
+  set_2.swap(set_1);
+  EXPECT_TRUE(set_2.contains(1));
+  EXPECT_TRUE(set_2.contains(2));
+  EXPECT_TRUE(set_2.contains(3));
+  EXPECT_TRUE(set_1.size() == 0);
+}
+
+TEST(Set, Merge) {
+  s21::set<int> set_1;
+  EXPECT_TRUE(set_1.insert(1).second);
+
+  s21::set<int> set_2;
+  EXPECT_TRUE(set_2.insert(2).second);
+  EXPECT_TRUE(set_2.insert(3).second);
+
+  set_1.merge(set_2);
+  EXPECT_TRUE(set_1.contains(1));
+  EXPECT_TRUE(set_1.contains(2));
+  EXPECT_TRUE(set_1.contains(3));
+  EXPECT_TRUE(set_2.size() == 0);
+  EXPECT_TRUE(set_2.empty());
 }
 
 int main(int argc, char **argv) {

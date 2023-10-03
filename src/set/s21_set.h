@@ -2,7 +2,6 @@
 #define CPP2_S21_CONTAINERS_SET_S21_SET_H_
 
 #include "../red_black_tree/s21_red_black_tree.h"
-#include "../red_black_tree/s21_red_black_tree.tpp"
 
 namespace s21 {
 template <typename Key>
@@ -52,4 +51,5 @@ class set {
 
 }  // namespace s21
 
+#include "s21_set.tpp"
 #endif  // CPP2_S21_CONTAINERS_SET_S21_SET_H_

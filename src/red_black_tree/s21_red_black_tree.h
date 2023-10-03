@@ -281,4 +281,5 @@ class RedBlackTree {
 
 }  // namespace s21
 
+#include "s21_red_black_tree.tpp"
 #endif  // CPP2_S21_CONTAINERS_RED_BLACK_TREE_S21_RED_BLACK_TREE_H_

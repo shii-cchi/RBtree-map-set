@@ -9,7 +9,7 @@ ifeq ($(shell uname), Linux)
 	OPEN = xdg-open
 endif
 
-SOURCE = test/test_set.cpp
+SOURCE = test/test_containers.cpp
 
 .PHONY: all
 all: gcov_report
