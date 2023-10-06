@@ -45,6 +45,7 @@ class set {
   bool contains(const key_type &key) const noexcept;
 
   bool operator==(const set &other) const;
+  
  private:
   RedBlackTree<value_type> *tree;
 };

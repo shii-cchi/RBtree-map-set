@@ -226,13 +226,13 @@ RedBlackTree<Key, Compare>::InsertNode(Node *root, Node *new_node) {
     parent->right = new_node;
   }
   UpdateSizeAndMinMaxNode(new_node);
-  BalanceTree(new_node);
+  BalanceForInsert(new_node);
 
   return {iterator(new_node), true};
 }
 
 template <typename Key, typename Compare>
-void RedBlackTree<Key, Compare>::BalanceTree(Node *node) {
+void RedBlackTree<Key, Compare>::BalanceForInsert(Node *node) {
   while (node != GetRoot() && node->parent->color == kRed) {
     Node *parent = node->parent;
     Node *grandparent = parent->parent;
@@ -349,24 +349,6 @@ RedBlackTree<Key, Compare>::LowerBound(const_reference key) {
 
   while (current) {
     if (!cmp(current->key, key)) {
-      res = current;
-      current = current->left;
-    } else {
-      current = current->right;
-    }
-  }
-
-  return iterator(res);
-}
-
-template <typename Key, typename Compare>
-typename RedBlackTree<Key, Compare>::iterator
-RedBlackTree<Key, Compare>::UpperBound(const_reference key) {
-  Node *current = GetRoot();
-  Node *res = End().node;
-
-  while (current) {
-    if (cmp(current->key, key)) {
       res = current;
       current = current->left;
     } else {
@@ -657,15 +639,15 @@ RedBlackTree<Key, Compare>::SearchMaxNode(Node *node) const noexcept {
 
 template <typename KeyType, typename Compare>
 bool RedBlackTree<KeyType, Compare>::CheckTree() const noexcept {
-  if (head->color == kBlack) {
-    return false;
-  }
-
   if (!GetRoot()) {
     return true;
   }
 
   if (GetRoot()->color == kRed) {
+    return false;
+  }
+
+  if (head->color == kBlack) {
     return false;
   }
 
@@ -684,22 +666,22 @@ template <typename KeyType, typename Compare>
 bool RedBlackTree<KeyType, Compare>::CheckRedNodes(
     const Node *node) const noexcept {
   if (node->color == kRed) {
-    if (node->left != nullptr && node->left->color == kRed) {
+    if (node->left && node->left->color == kRed) {
       return false;
     }
-    if (node->right != nullptr && node->right->color == kRed) {
-      return false;
-    }
-  }
-
-  if (node->left != nullptr) {
-    if (CheckRedNodes(node->left) == false) {
+    if (node->right && node->right->color == kRed) {
       return false;
     }
   }
 
-  if (node->right != nullptr) {
-    if (CheckRedNodes(node->right) == false) {
+  if (node->left) {
+    if (!CheckRedNodes(node->left)) {
+      return false;
+    }
+  }
+
+  if (node->right) {
+    if (!CheckRedNodes(node->right)) {
       return false;
     }
   }
@@ -710,17 +692,16 @@ bool RedBlackTree<KeyType, Compare>::CheckRedNodes(
 template <typename KeyType, typename Compare>
 int RedBlackTree<KeyType, Compare>::CheckBlackHeight(
     const Node *node) const noexcept {
-  if (node == nullptr) {
+  if (!node) {
     return 0;
   }
 
   int left_height = CheckBlackHeight(node->left);
   int right_height = CheckBlackHeight(node->right);
-  int add = node->color == kBlack ? 1 : 0;
   if (left_height == -1 || right_height == -1 || left_height != right_height) {
     return -1;
   } else {
-    return left_height + add;
+    return left_height + (node->color == kBlack ? 1 : 0);
   }
 }
 
