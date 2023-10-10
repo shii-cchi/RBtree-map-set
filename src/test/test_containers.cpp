@@ -399,6 +399,7 @@ TEST(Map, Constructors_1) {
   s21::map<int, std::string> map_1;
   EXPECT_TRUE(map_1.size() == 0);
   EXPECT_TRUE(map_1.empty());
+  map_1.max_size();
 
   s21::map<int, std::string> map_2{{1, "1"}, {2, "2"}};
   EXPECT_TRUE(map_2.size() == 2);
@@ -539,6 +540,7 @@ TEST(Map, Merge) {
 
 TEST(Set, Constructors_1) {
   s21::set<int> set_1;
+  set_1.max_size();
   EXPECT_TRUE(set_1.size() == 0);
   EXPECT_TRUE(set_1.empty());
 
