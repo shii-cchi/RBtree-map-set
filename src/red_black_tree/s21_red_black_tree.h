@@ -6,7 +6,7 @@
 
 namespace s21 {
 
-enum Color { kRed, kBlack };
+enum class Color { kRed, kBlack };
 
 template <typename Key, typename Compare = std::less<Key>>
 class RedBlackTree {
@@ -37,17 +37,17 @@ class RedBlackTree {
   iterator End() noexcept;
   const_iterator End() const noexcept;
 
-  bool isEmpty();
+  bool isEmpty() const noexcept;
   size_type GetSize() const noexcept;
   size_type GetMaxSize() const noexcept;
 
   std::pair<iterator, bool> Insert(const key_type key);
-  void Erase(iterator position) noexcept;
-  void SwapTree(RedBlackTree &other);
+  void Erase(iterator position);
+  void SwapTree(RedBlackTree &other) noexcept;
   void Merge(RedBlackTree &other);
-  iterator Find(const_reference key);
+  iterator Find(const_reference key) noexcept;
 
-  bool CheckTree() const noexcept;
+  bool CheckTree() const;
 
  private:
   void CopyTree(const RedBlackTree &other);
@@ -59,8 +59,8 @@ class RedBlackTree {
   void SetRoot(Node *node);
 
   void SetupHead();
-  Node *GetMinNode();
-  Node *GetMaxNode();
+  Node *GetMinNode() const;
+  Node *GetMaxNode() const;
   void SetMinNode(Node *node);
   void SetMaxNode(Node *node);
 
@@ -71,22 +71,22 @@ class RedBlackTree {
   void UpdateSizeAndMinMaxNode(Node *new_node);
   iterator LowerBound(const_reference key);
 
-  Node *ExtractNode(iterator position) noexcept;
+  Node *ExtractNode(iterator position);
   void UpdateParam(Node *node);
   void ExtractFromTree(Node *node);
-  void SwapForErase(Node *node, Node *other) noexcept;
-  void SwapNode(Node *node_1, Node *node_2) noexcept;
-  void UpdateParent(Node *node) noexcept;
-  void BalanceForErase(Node *extracted_node) noexcept;
-  bool isRed(Node *node) noexcept;
-  bool IsChildrenBlack(Node *node) const noexcept;
-  bool IsLeftChildRed(Node *node) const noexcept;
-  bool IsRightChildRed(Node *node) const noexcept;
-  Node *SearchMinNode(Node *node) const noexcept;
-  Node *SearchMaxNode(Node *node) const noexcept;
+  void SwapForErase(Node *node, Node *other);
+  void SwapNode(Node *node_1, Node *node_2);
+  void UpdateParent(Node *node);
+  void BalanceForErase(Node *extracted_node);
+  bool isRed(Node *node) const;
+  bool IsChildrenBlack(Node *node) const;
+  bool IsLeftChildRed(Node *node) const;
+  bool IsRightChildRed(Node *node) const;
+  Node *SearchMinNode(Node *node) const;
+  Node *SearchMaxNode(Node *node) const;
 
-  bool CheckRedNodes(const Node *node) const noexcept;
-  int CheckBlackHeight(const Node *node) const noexcept;
+  bool CheckRedNodes(const Node *node) const;
+  int CheckBlackHeight(const Node *node) const;
 
   struct Node {
     Node()
@@ -94,14 +94,14 @@ class RedBlackTree {
           left(this),
           right(this),
           key(key_type{}),
-          color(kRed) {}
+          color(Color::kRed) {}
 
     Node(const key_type &key)
         : parent(nullptr),
           left(nullptr),
           right(nullptr),
           key(key),
-          color(kRed) {}
+          color(Color::kRed) {}
 
     Node(key_type key, Color color)
         : parent(nullptr),
@@ -114,12 +114,12 @@ class RedBlackTree {
       left = nullptr;
       right = nullptr;
       parent = nullptr;
-      color = kRed;
+      color = Color::kRed;
     }
 
     Node *GetNextNode() const noexcept {
       Node *node = const_cast<Node *>(this);
-      if (node->color == kRed &&
+      if (node->color == Color::kRed &&
           (node->parent == nullptr || node->parent->parent == node)) {
         node = node->left;
       } else if (node->right != nullptr) {
@@ -146,7 +146,7 @@ class RedBlackTree {
     Node *GetPreviousNode() const noexcept {
       Node *node = const_cast<Node *>(this);
 
-      if (node->color == kRed &&
+      if (node->color == Color::kRed &&
           (node->parent == nullptr || node->parent->parent == node)) {
         node = node->right;
       } else if (node->left != nullptr) {

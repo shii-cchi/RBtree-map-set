@@ -54,11 +54,11 @@ class map {
   std::pair<iterator, bool> insert(const key_type &key, const mapped_type &obj);
   std::pair<iterator, bool> insert_or_assign(const key_type &key,
                                              const mapped_type &obj);
-  void erase(iterator pos) noexcept;
+  void erase(iterator pos);
   void swap(map &other) noexcept;
-  void merge(map &other) noexcept;
+  void merge(map &other);
 
-  bool contains(const key_type &key) const noexcept;
+  bool contains(const key_type &key) const;
 
   bool operator==(const map &other) const;
 

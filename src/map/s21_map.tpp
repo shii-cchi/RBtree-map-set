@@ -134,7 +134,7 @@ std::pair<typename map<Key, T>::iterator, bool> map<Key, T>::insert_or_assign(
 }
 
 template <typename Key, typename T>
-void map<Key, T>::erase(iterator pos) noexcept {
+void map<Key, T>::erase(iterator pos) {
   tree->Erase(pos);
 }
 
@@ -144,12 +144,12 @@ void map<Key, T>::swap(map &other) noexcept {
 }
 
 template <typename Key, typename T>
-void map<Key, T>::merge(map &other) noexcept {
+void map<Key, T>::merge(map &other) {
   tree->Merge(*other.tree);
 }
 
 template <typename Key, typename T>
-bool map<Key, T>::contains(const key_type &key) const noexcept {
+bool map<Key, T>::contains(const key_type &key) const {
   iterator it = tree->Find({key, mapped_type{}});
 
   return it != end();

@@ -37,12 +37,12 @@ class set {
 
   void clear() noexcept;
   std::pair<iterator, bool> insert(const value_type &value);
-  void erase(iterator pos) noexcept;
+  void erase(iterator pos);
   void swap(set &other) noexcept;
-  void merge(set &other) noexcept;
+  void merge(set &other);
 
-  iterator find(const key_type &key) const noexcept;
-  bool contains(const key_type &key) const noexcept;
+  iterator find(const key_type &key) const;
+  bool contains(const key_type &key) const;
 
   bool operator==(const set &other) const;
   

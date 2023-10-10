@@ -84,7 +84,7 @@ std::pair<typename set<Key>::iterator, bool> set<Key>::insert(
 }
 
 template <typename Key>
-void set<Key>::erase(iterator pos) noexcept {
+void set<Key>::erase(iterator pos) {
   tree->Erase(pos);
 }
 
@@ -94,17 +94,17 @@ void set<Key>::swap(set &other) noexcept {
 }
 
 template <typename Key>
-void set<Key>::merge(set &other) noexcept {
+void set<Key>::merge(set &other) {
   tree->Merge(*other.tree);
 }
 
 template <typename Key>
-typename set<Key>::iterator set<Key>::find(const key_type &key) const noexcept {
+typename set<Key>::iterator set<Key>::find(const key_type &key) const {
     return tree->Find(key);
 }
 
 template <typename Key>
-bool set<Key>::contains(const key_type &key) const noexcept {
+bool set<Key>::contains(const key_type &key) const {
   iterator it = tree->Find(key);
 
   return it != end();
