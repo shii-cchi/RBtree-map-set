@@ -42,6 +42,8 @@ class RedBlackTree {
   size_type GetMaxSize() const noexcept;
 
   std::pair<iterator, bool> Insert(const key_type key);
+  template <typename... Args>
+  std::vector<std::pair<iterator, bool>> Insert_many(Args &&...args);
   void Erase(iterator position);
   void SwapTree(RedBlackTree &other) noexcept;
   void Merge(RedBlackTree &other);

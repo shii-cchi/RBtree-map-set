@@ -37,6 +37,8 @@ class set {
 
   void clear() noexcept;
   std::pair<iterator, bool> insert(const value_type &value);
+  template <typename... Args>
+  std::vector<std::pair<iterator, bool>> insert_many(Args &&...args);
   void erase(iterator pos);
   void swap(set &other) noexcept;
   void merge(set &other);

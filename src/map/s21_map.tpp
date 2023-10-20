@@ -134,6 +134,13 @@ std::pair<typename map<Key, T>::iterator, bool> map<Key, T>::insert_or_assign(
 }
 
 template <typename Key, typename T>
+template <typename... Args>
+std::vector<std::pair<typename map<Key, T>::iterator, bool>>
+map<Key, T>::insert_many(Args &&...args) {
+  return tree->Insert_many((args)...);
+}
+
+template <typename Key, typename T>
 void map<Key, T>::erase(iterator pos) {
   tree->Erase(pos);
 }

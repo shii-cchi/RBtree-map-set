@@ -84,6 +84,12 @@ std::pair<typename set<Key>::iterator, bool> set<Key>::insert(
 }
 
 template <typename Key>
+template <typename... Args>
+std::vector<std::pair<typename set<Key>::iterator, bool>> set<Key>::insert_many(Args &&...args) {
+  return tree->Insert_many((args)...);
+}
+
+template <typename Key>
 void set<Key>::erase(iterator pos) {
   tree->Erase(pos);
 }

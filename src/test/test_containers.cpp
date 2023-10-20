@@ -186,6 +186,19 @@ TEST(RedBlackTree, Insert_Find_3) {
   EXPECT_EQ(tree.CheckTree(), true);
 }
 
+TEST(RedBlackTree, Insert_Many) {
+  s21::RedBlackTree<int> tree;
+  tree.Insert_many(1, 7, 4, 5, 5, 3, 9);
+  EXPECT_EQ(tree.GetSize(), 6);
+  EXPECT_NE(tree.Find(1), tree.End());
+  EXPECT_NE(tree.Find(7), tree.End());
+  EXPECT_NE(tree.Find(4), tree.End());
+  EXPECT_NE(tree.Find(5), tree.End());
+  EXPECT_NE(tree.Find(3), tree.End());
+  EXPECT_NE(tree.Find(9), tree.End());
+  EXPECT_EQ(tree.CheckTree(), true);
+}
+
 TEST(RedBlackTree, Merge_1) {
   s21::RedBlackTree<int> tree_1;
   tree_1.Insert(2);
@@ -469,6 +482,17 @@ TEST(Map, Insert) {
   EXPECT_TRUE(map[1] == "1");
   EXPECT_TRUE(map[2] == "2");
   EXPECT_TRUE(map[3] == "3");
+  EXPECT_TRUE(map.size() == 3);
+}
+
+TEST(Map, Insert_Many) {
+  s21::map<int, std::string> map;
+  map.insert_many(std::make_pair(1, "1"), std::make_pair(2, "2"),
+                  std::make_pair(3, "3"));
+  EXPECT_TRUE(map[1] == "1");
+  EXPECT_TRUE(map[2] == "2");
+  EXPECT_TRUE(map[3] == "3");
+  EXPECT_TRUE(map.size() == 3);
 }
 
 TEST(Map, InsertOrAssign) {
@@ -595,6 +619,16 @@ TEST(Set, Insert) {
   EXPECT_TRUE(set.insert(2).second);
   EXPECT_TRUE(set.insert(3).second);
   EXPECT_FALSE(set.insert(3).second);
+  EXPECT_TRUE(set.contains(1));
+  EXPECT_TRUE(set.contains(2));
+  EXPECT_TRUE(set.contains(3));
+  EXPECT_TRUE(set.size() == 3);
+}
+
+TEST(Set, Insert_Many) {
+  s21::set<int> set;
+  set.insert_many(1, 2, 3);
+  EXPECT_TRUE(set.size() == 3);
   EXPECT_TRUE(set.contains(1));
   EXPECT_TRUE(set.contains(2));
   EXPECT_TRUE(set.contains(3));

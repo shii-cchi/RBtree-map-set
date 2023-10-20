@@ -54,6 +54,8 @@ class map {
   std::pair<iterator, bool> insert(const key_type &key, const mapped_type &obj);
   std::pair<iterator, bool> insert_or_assign(const key_type &key,
                                              const mapped_type &obj);
+  template <typename... Args>
+  std::vector<std::pair<iterator, bool>> insert_many(Args &&...args);
   void erase(iterator pos);
   void swap(map &other) noexcept;
   void merge(map &other);
