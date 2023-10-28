@@ -1,6 +1,6 @@
-#include "s21_map.h"
+#include "map.h"
 
-namespace s21 {
+namespace RBtreeMapSet {
 
 template <typename Key, typename T>
 map<Key, T>::map() : tree(new tree_type{}) {}
@@ -181,4 +181,4 @@ bool map<Key, T>::operator==(const map &other) const {
   return true;
 }
 
-}  // namespace s21
+}  // namespace RBtreeMapSet

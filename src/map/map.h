@@ -1,11 +1,12 @@
-#ifndef CPP2_S21_CONTAINERS_MAP_S21_MAP_H_
-#define CPP2_S21_CONTAINERS_MAP_S21_MAP_H_
+#ifndef CONTAINERS_MAP_MAP_H_
+#define CONTAINERS_MAP_MAP_H_
 
 #include <stdexcept>
 
-#include "../red_black_tree/s21_red_black_tree.h"
+#include "../red_black_tree/red_black_tree.h"
 
-namespace s21 {
+namespace RBtreeMapSet {
+
 template <typename Key, typename T>
 class map {
  public:
@@ -68,7 +69,7 @@ class map {
   RedBlackTree<value_type, MapCompare> *tree;
 };
 
-}  // namespace s21
+}  // namespace RBtreeMapSet
 
-#include "s21_map.tpp"
-#endif  // CPP2_S21_CONTAINERS_MAP_S21_MAP_H_
+#include "map.tpp"
+#endif  // CONTAINERS_MAP_MAP_H_

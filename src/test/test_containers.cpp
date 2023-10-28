@@ -1,44 +1,44 @@
 #include <gtest/gtest.h>
 
-#include "../map/s21_map.h"
-#include "../set/s21_set.h"
+#include "../map/map.h"
+#include "../set/set.h"
 
 // TREE//
 
 TEST(RedBlackTree, Constructors_1) {
-  s21::RedBlackTree<int> tree_1;
+  RBtreeMapSet::RedBlackTree<int> tree_1;
   tree_1.Insert(2);
   tree_1 = tree_1;
 
-  s21::RedBlackTree<int> tree_2;
+  RBtreeMapSet::RedBlackTree<int> tree_2;
   tree_2 = tree_1;
   EXPECT_TRUE(tree_2.GetSize() == 1);
   EXPECT_NE(tree_2.Find(2), tree_2.End());
 
-  s21::RedBlackTree<int> tree_3;
+  RBtreeMapSet::RedBlackTree<int> tree_3;
   tree_2 = tree_3;
   EXPECT_TRUE(tree_2.GetSize() == 0);
   EXPECT_EQ(tree_2.Find(2), tree_2.End());
 }
 
 TEST(RedBlackTree, Constructors_2) {
-  s21::RedBlackTree<int> tree_1;
+  RBtreeMapSet::RedBlackTree<int> tree_1;
   tree_1.Insert(2);
 
-  s21::RedBlackTree<int> tree_2;
+  RBtreeMapSet::RedBlackTree<int> tree_2;
   tree_2 = std::move(tree_1);
   EXPECT_TRUE(tree_2.GetSize() == 1);
   EXPECT_NE(tree_2.Find(2), tree_2.End());
 }
 
 TEST(RedBlackTree, Constructors_3) {
-  s21::RedBlackTree<int> tree_1;
+  RBtreeMapSet::RedBlackTree<int> tree_1;
   tree_1.Insert(2);
   tree_1.Insert(1);
   tree_1.Insert(4);
   tree_1.Insert(5);
 
-  s21::RedBlackTree<int> tree_2 = tree_1;
+  RBtreeMapSet::RedBlackTree<int> tree_2 = tree_1;
   EXPECT_TRUE(tree_2.GetSize() == 4);
   EXPECT_NE(tree_2.Find(2), tree_2.End());
   EXPECT_NE(tree_2.Find(1), tree_2.End());
@@ -47,17 +47,17 @@ TEST(RedBlackTree, Constructors_3) {
 }
 
 TEST(RedBlackTree, Constructors_4) {
-  s21::RedBlackTree<int> tree_1;
+  RBtreeMapSet::RedBlackTree<int> tree_1;
   tree_1.Insert(2);
 
-  s21::RedBlackTree<int> tree_2 = std::move(tree_1);
+  RBtreeMapSet::RedBlackTree<int> tree_2 = std::move(tree_1);
 
   EXPECT_TRUE(tree_2.GetSize() == 1);
   EXPECT_NE(tree_2.Find(2), tree_2.End());
 }
 
 TEST(RedBlackTree, Iterator_1) {
-  s21::RedBlackTree<int> tree;
+  RBtreeMapSet::RedBlackTree<int> tree;
   for (int i = 5; i >= 0; --i) {
     tree.Insert(i);
   }
@@ -78,7 +78,7 @@ TEST(RedBlackTree, Iterator_1) {
 }
 
 TEST(RedBlackTree, Iterator_2) {
-  s21::RedBlackTree<int> tree;
+  RBtreeMapSet::RedBlackTree<int> tree;
   tree.Insert(2);
   tree.Insert(1);
   tree.Insert(4);
@@ -102,12 +102,12 @@ TEST(RedBlackTree, Iterator_2) {
 }
 
 TEST(RedBlackTree, IteratorConst) {
-  s21::RedBlackTree<int> tree;
+  RBtreeMapSet::RedBlackTree<int> tree;
   for (int i = 5; i >= 0; --i) {
     tree.Insert(i);
   }
 
-  const s21::RedBlackTree<int> &const_tree = tree;
+  const RBtreeMapSet::RedBlackTree<int> &const_tree = tree;
 
   int expectedValue = 0;
   for (auto it = const_tree.Begin(); it != const_tree.End(); it++) {
@@ -127,7 +127,7 @@ TEST(RedBlackTree, IteratorConst) {
 }
 
 TEST(RedBlackTree, isEmpty_GetSize) {
-  s21::RedBlackTree<int> tree;
+  RBtreeMapSet::RedBlackTree<int> tree;
   EXPECT_TRUE(tree.isEmpty());
   EXPECT_TRUE(tree.GetSize() == 0);
   tree.Insert(2);
@@ -136,7 +136,7 @@ TEST(RedBlackTree, isEmpty_GetSize) {
 }
 
 TEST(RedBlackTree, Insert_Find_1) {
-  s21::RedBlackTree<int> tree;
+  RBtreeMapSet::RedBlackTree<int> tree;
   tree.Insert(2);
   tree.Insert(5);
   tree.Insert(3);
@@ -155,7 +155,7 @@ TEST(RedBlackTree, Insert_Find_1) {
 }
 
 TEST(RedBlackTree, Insert_Find_2) {
-  s21::RedBlackTree<int> tree;
+  RBtreeMapSet::RedBlackTree<int> tree;
   tree.Insert(7);
   tree.Insert(2);
   tree.Insert(3);
@@ -168,7 +168,7 @@ TEST(RedBlackTree, Insert_Find_2) {
 }
 
 TEST(RedBlackTree, Insert_Find_3) {
-  s21::RedBlackTree<int> tree;
+  RBtreeMapSet::RedBlackTree<int> tree;
   tree.Insert(9);
   tree.Insert(8);
   tree.Insert(1);
@@ -187,7 +187,7 @@ TEST(RedBlackTree, Insert_Find_3) {
 }
 
 TEST(RedBlackTree, Insert_Many) {
-  s21::RedBlackTree<int> tree;
+  RBtreeMapSet::RedBlackTree<int> tree;
   tree.Insert_many(1, 7, 4, 5, 5, 3, 9);
   EXPECT_EQ(tree.GetSize(), 6);
   EXPECT_NE(tree.Find(1), tree.End());
@@ -200,10 +200,10 @@ TEST(RedBlackTree, Insert_Many) {
 }
 
 TEST(RedBlackTree, Merge_1) {
-  s21::RedBlackTree<int> tree_1;
+  RBtreeMapSet::RedBlackTree<int> tree_1;
   tree_1.Insert(2);
   tree_1.Insert(5);
-  s21::RedBlackTree<int> tree_2;
+  RBtreeMapSet::RedBlackTree<int> tree_2;
   tree_2.Insert(2);
   tree_2.Insert(5);
   tree_1.Merge(tree_2);
@@ -218,10 +218,10 @@ TEST(RedBlackTree, Merge_1) {
 }
 
 TEST(RedBlackTree, Merge_2) {
-  s21::RedBlackTree<int> tree_1;
+  RBtreeMapSet::RedBlackTree<int> tree_1;
   tree_1.Insert(2);
   tree_1.Insert(5);
-  s21::RedBlackTree<int> tree_2;
+  RBtreeMapSet::RedBlackTree<int> tree_2;
   tree_2.Insert(1);
   tree_2.Insert(4);
   tree_1.Merge(tree_2);
@@ -238,7 +238,7 @@ TEST(RedBlackTree, Merge_2) {
 }
 
 TEST(RedBlackTree, Erase_1) {
-  s21::RedBlackTree<int> tree;
+  RBtreeMapSet::RedBlackTree<int> tree;
   tree.Insert(2);
   tree.Insert(5);
   tree.Erase(tree.Find(3));
@@ -248,7 +248,7 @@ TEST(RedBlackTree, Erase_1) {
 }
 
 TEST(RedBlackTree, Erase_2) {
-  s21::RedBlackTree<int> tree;
+  RBtreeMapSet::RedBlackTree<int> tree;
   tree.Insert(2);
   tree.Insert(5);
   tree.Insert(1);
@@ -270,7 +270,7 @@ TEST(RedBlackTree, Erase_2) {
 }
 
 TEST(RedBlackTree, Erase_3) {
-  s21::RedBlackTree<int> tree;
+  RBtreeMapSet::RedBlackTree<int> tree;
   tree.Insert(1);
   tree.Insert(9);
   tree.Insert(7);
@@ -306,7 +306,7 @@ TEST(RedBlackTree, Erase_3) {
 }
 
 TEST(RedBlackTree, Erase_4) {
-  s21::RedBlackTree<int> tree;
+  RBtreeMapSet::RedBlackTree<int> tree;
   tree.Insert(10);
   tree.Insert(2);
   tree.Insert(3);
@@ -342,7 +342,7 @@ TEST(RedBlackTree, Erase_4) {
 }
 
 TEST(RedBlackTree, Erase_5) {
-  s21::RedBlackTree<int> tree;
+  RBtreeMapSet::RedBlackTree<int> tree;
   tree.Insert(1);
   tree.Insert(2);
   tree.Insert(3);
@@ -370,7 +370,7 @@ TEST(RedBlackTree, Erase_5) {
 }
 
 TEST(RedBlackTree, Erase_6) {
-  s21::RedBlackTree<int> tree;
+  RBtreeMapSet::RedBlackTree<int> tree;
   tree.Insert(9);
   tree.Insert(1);
   tree.Insert(3);
@@ -409,23 +409,23 @@ TEST(RedBlackTree, Erase_6) {
 // MAP//
 
 TEST(Map, Constructors_1) {
-  s21::map<int, std::string> map_1;
+  RBtreeMapSet::map<int, std::string> map_1;
   EXPECT_TRUE(map_1.size() == 0);
   EXPECT_TRUE(map_1.empty());
   map_1.max_size();
 
-  s21::map<int, std::string> map_2{{1, "1"}, {2, "2"}};
+  RBtreeMapSet::map<int, std::string> map_2{{1, "1"}, {2, "2"}};
   EXPECT_TRUE(map_2.size() == 2);
   EXPECT_TRUE(map_2.contains(1));
   EXPECT_TRUE(map_2.contains(2));
 
-  s21::map<int, std::string> map_3(map_2);
+  RBtreeMapSet::map<int, std::string> map_3(map_2);
   EXPECT_TRUE(map_3.size() == 2);
   EXPECT_TRUE(map_3.contains(1));
   EXPECT_TRUE(map_3.contains(2));
   EXPECT_TRUE(map_2 == map_3);
 
-  s21::map<int, std::string> map_4(std::move(map_2));
+  RBtreeMapSet::map<int, std::string> map_4(std::move(map_2));
   EXPECT_TRUE(map_4.size() == 2);
   EXPECT_TRUE(map_4.contains(1));
   EXPECT_TRUE(map_4.contains(2));
@@ -433,16 +433,16 @@ TEST(Map, Constructors_1) {
 }
 
 TEST(Map, Constructors_2) {
-  s21::map<int, std::string> map_1{{1, "1"}, {2, "2"}};
+  RBtreeMapSet::map<int, std::string> map_1{{1, "1"}, {2, "2"}};
 
-  s21::map<int, std::string> map_2;
+  RBtreeMapSet::map<int, std::string> map_2;
   map_2 = map_1;
   EXPECT_TRUE(map_2.size() == 2);
   EXPECT_TRUE(map_2.contains(1));
   EXPECT_TRUE(map_2.contains(2));
   EXPECT_TRUE(map_1 == map_2);
 
-  s21::map<int, std::string> map_3;
+  RBtreeMapSet::map<int, std::string> map_3;
   map_3 = std::move(map_1);
   EXPECT_TRUE(map_3.size() == 2);
   EXPECT_TRUE(map_3.contains(1));
@@ -451,19 +451,19 @@ TEST(Map, Constructors_2) {
 }
 
 TEST(Map, At) {
-  s21::map<int, std::string> map{{1, "1"}, {2, "2"}};
+  RBtreeMapSet::map<int, std::string> map{{1, "1"}, {2, "2"}};
   EXPECT_TRUE(map.at(1) == "1");
   EXPECT_TRUE(map.at(2) == "2");
   EXPECT_THROW(map.at(3), std::out_of_range);
 
-  const s21::map<int, std::string> map_1{{1, "1"}, {2, "2"}};
+  const RBtreeMapSet::map<int, std::string> map_1{{1, "1"}, {2, "2"}};
   EXPECT_TRUE(map_1.at(1) == "1");
   EXPECT_TRUE(map_1.at(2) == "2");
   EXPECT_THROW(map_1.at(3), std::out_of_range);
 }
 
 TEST(Map, Brackets) {
-  s21::map<int, std::string> map{{1, "1"}, {2, "2"}};
+  RBtreeMapSet::map<int, std::string> map{{1, "1"}, {2, "2"}};
   EXPECT_TRUE(map[1] == "1");
   EXPECT_TRUE(map[2] == "2");
   EXPECT_TRUE(map[3] == "");
@@ -474,7 +474,7 @@ TEST(Map, Brackets) {
 }
 
 TEST(Map, Insert) {
-  s21::map<int, std::string> map;
+  RBtreeMapSet::map<int, std::string> map;
   EXPECT_TRUE(map.insert(1, "1").second);
   EXPECT_TRUE(map.insert(2, "2").second);
   EXPECT_TRUE(map.insert(3, "3").second);
@@ -486,7 +486,7 @@ TEST(Map, Insert) {
 }
 
 TEST(Map, Insert_Many) {
-  s21::map<int, std::string> map;
+  RBtreeMapSet::map<int, std::string> map;
   map.insert_many(std::make_pair(1, "1"), std::make_pair(2, "2"),
                   std::make_pair(3, "3"));
   EXPECT_TRUE(map[1] == "1");
@@ -496,7 +496,7 @@ TEST(Map, Insert_Many) {
 }
 
 TEST(Map, InsertOrAssign) {
-  s21::map<int, std::string> map;
+  RBtreeMapSet::map<int, std::string> map;
   EXPECT_TRUE(map.insert_or_assign(1, "1").second);
   EXPECT_TRUE(map.insert_or_assign(2, "2").second);
   EXPECT_TRUE(map.insert_or_assign(3, "3").second);
@@ -507,7 +507,7 @@ TEST(Map, InsertOrAssign) {
 }
 
 TEST(Map, Erase_1) {
-  s21::map<int, std::string> map;
+  RBtreeMapSet::map<int, std::string> map;
   EXPECT_TRUE(map.insert(1, "1").second);
   EXPECT_TRUE(map[1] == "1");
   map.erase(map.begin());
@@ -516,7 +516,7 @@ TEST(Map, Erase_1) {
 }
 
 TEST(Map, Erase_2) {
-  s21::map<int, std::string> map;
+  RBtreeMapSet::map<int, std::string> map;
   EXPECT_TRUE(map.insert(1, "1").second);
   EXPECT_TRUE(map.insert(2, "2").second);
   EXPECT_TRUE(map.insert(3, "3").second);
@@ -530,12 +530,12 @@ TEST(Map, Erase_2) {
 }
 
 TEST(Map, Swap) {
-  s21::map<int, std::string> map_1;
+  RBtreeMapSet::map<int, std::string> map_1;
   EXPECT_TRUE(map_1.insert(1, "1").second);
   EXPECT_TRUE(map_1.insert(2, "2").second);
   EXPECT_TRUE(map_1.insert(3, "3").second);
 
-  s21::map<int, std::string> map_2;
+  RBtreeMapSet::map<int, std::string> map_2;
   map_2.swap(map_1);
 
   EXPECT_TRUE(map_2[1] == "1");
@@ -545,10 +545,10 @@ TEST(Map, Swap) {
 }
 
 TEST(Map, Merge) {
-  s21::map<int, std::string> map_1;
+  RBtreeMapSet::map<int, std::string> map_1;
   EXPECT_TRUE(map_1.insert(1, "1").second);
 
-  s21::map<int, std::string> map_2;
+  RBtreeMapSet::map<int, std::string> map_2;
   EXPECT_TRUE(map_2.insert(2, "2").second);
   EXPECT_TRUE(map_2.insert(3, "3").second);
 
@@ -563,23 +563,23 @@ TEST(Map, Merge) {
 // SET//
 
 TEST(Set, Constructors_1) {
-  s21::set<int> set_1;
+  RBtreeMapSet::set<int> set_1;
   set_1.max_size();
   EXPECT_TRUE(set_1.size() == 0);
   EXPECT_TRUE(set_1.empty());
 
-  s21::set<int> set_2{1, 2};
+  RBtreeMapSet::set<int> set_2{1, 2};
   EXPECT_TRUE(set_2.size() == 2);
   EXPECT_TRUE(set_2.contains(1));
   EXPECT_TRUE(set_2.contains(2));
 
-  s21::set<int> set_3(set_2);
+  RBtreeMapSet::set<int> set_3(set_2);
   EXPECT_TRUE(set_3.size() == 2);
   EXPECT_TRUE(set_3.contains(1));
   EXPECT_TRUE(set_3.contains(2));
   EXPECT_TRUE(set_2 == set_3);
 
-  s21::set<int> set_4(std::move(set_2));
+  RBtreeMapSet::set<int> set_4(std::move(set_2));
   EXPECT_TRUE(set_4.size() == 2);
   EXPECT_TRUE(set_4.contains(1));
   EXPECT_TRUE(set_4.contains(2));
@@ -587,16 +587,16 @@ TEST(Set, Constructors_1) {
 }
 
 TEST(Set, Constructors_2) {
-  s21::set<int> set_1{1, 2};
+  RBtreeMapSet::set<int> set_1{1, 2};
 
-  s21::set<int> set_2;
+  RBtreeMapSet::set<int> set_2;
   set_2 = set_1;
   EXPECT_TRUE(set_2.size() == 2);
   EXPECT_TRUE(set_2.contains(1));
   EXPECT_TRUE(set_2.contains(2));
   EXPECT_TRUE(set_1 == set_2);
 
-  s21::set<int> set_3;
+  RBtreeMapSet::set<int> set_3;
   set_3 = std::move(set_1);
   EXPECT_TRUE(set_3.size() == 2);
   EXPECT_TRUE(set_3.contains(1));
@@ -605,7 +605,7 @@ TEST(Set, Constructors_2) {
 }
 
 TEST(Set, Clear) {
-  s21::set<int> set{1, 2};
+  RBtreeMapSet::set<int> set{1, 2};
   EXPECT_TRUE(set.contains(1));
   EXPECT_TRUE(set.contains(2));
   set.clear();
@@ -614,7 +614,7 @@ TEST(Set, Clear) {
 }
 
 TEST(Set, Insert) {
-  s21::set<int> set;
+  RBtreeMapSet::set<int> set;
   EXPECT_TRUE(set.insert(1).second);
   EXPECT_TRUE(set.insert(2).second);
   EXPECT_TRUE(set.insert(3).second);
@@ -626,7 +626,7 @@ TEST(Set, Insert) {
 }
 
 TEST(Set, Insert_Many) {
-  s21::set<int> set;
+  RBtreeMapSet::set<int> set;
   set.insert_many(1, 2, 3);
   EXPECT_TRUE(set.size() == 3);
   EXPECT_TRUE(set.contains(1));
@@ -635,7 +635,7 @@ TEST(Set, Insert_Many) {
 }
 
 TEST(Set, Erase_1) {
-  s21::set<int> set;
+  RBtreeMapSet::set<int> set;
   EXPECT_TRUE(set.insert(1).second);
   EXPECT_TRUE(set.contains(1));
   set.erase(set.begin());
@@ -644,7 +644,7 @@ TEST(Set, Erase_1) {
 }
 
 TEST(Set, Erase_2) {
-  s21::set<int> set;
+  RBtreeMapSet::set<int> set;
   EXPECT_TRUE(set.insert(1).second);
   EXPECT_TRUE(set.insert(2).second);
   EXPECT_TRUE(set.insert(3).second);
@@ -661,12 +661,12 @@ TEST(Set, Erase_2) {
 }
 
 TEST(Set, Swap) {
-  s21::set<int> set_1;
+  RBtreeMapSet::set<int> set_1;
   EXPECT_TRUE(set_1.insert(1).second);
   EXPECT_TRUE(set_1.insert(2).second);
   EXPECT_TRUE(set_1.insert(3).second);
 
-  s21::set<int> set_2;
+  RBtreeMapSet::set<int> set_2;
   set_2.swap(set_1);
   EXPECT_TRUE(set_2.contains(1));
   EXPECT_TRUE(set_2.contains(2));
@@ -675,10 +675,10 @@ TEST(Set, Swap) {
 }
 
 TEST(Set, Merge) {
-  s21::set<int> set_1;
+  RBtreeMapSet::set<int> set_1;
   EXPECT_TRUE(set_1.insert(1).second);
 
-  s21::set<int> set_2;
+  RBtreeMapSet::set<int> set_2;
   EXPECT_TRUE(set_2.insert(2).second);
   EXPECT_TRUE(set_2.insert(3).second);
 

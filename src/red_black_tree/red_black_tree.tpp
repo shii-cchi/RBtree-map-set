@@ -1,6 +1,6 @@
-#include "s21_red_black_tree.h"
+#include "red_black_tree.h"
 
-namespace s21 {
+namespace RBtreeMapSet {
 
 template <typename Key, typename Compare>
 RedBlackTree<Key, Compare>::RedBlackTree() : head(new Node), tree_size(0) {}
@@ -718,4 +718,4 @@ int RedBlackTree<KeyType, Compare>::CheckBlackHeight(const Node *node) const {
   }
 }
 
-}  // namespace s21
+}  // namespace RBtreeMapSet

@@ -1,9 +1,10 @@
-#ifndef CPP2_S21_CONTAINERS_SET_S21_SET_H_
-#define CPP2_S21_CONTAINERS_SET_S21_SET_H_
+#ifndef CONTAINERS_SET_SET_H_
+#define CONTAINERS_SET_SET_H_
 
-#include "../red_black_tree/s21_red_black_tree.h"
+#include "../red_black_tree/red_black_tree.h"
 
-namespace s21 {
+namespace RBtreeMapSet {
+
 template <typename Key>
 class set {
  public:
@@ -52,7 +53,7 @@ class set {
   RedBlackTree<value_type> *tree;
 };
 
-}  // namespace s21
+}  // namespace RBtreeMapSet
 
-#include "s21_set.tpp"
-#endif  // CPP2_S21_CONTAINERS_SET_S21_SET_H_
+#include "set.tpp"
+#endif  // CONTAINERS_SET_SET_H_

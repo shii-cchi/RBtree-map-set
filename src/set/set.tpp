@@ -1,6 +1,6 @@
-#include "s21_set.h"
+#include "set.h"
 
-namespace s21 {
+namespace RBtreeMapSet {
 
 template <typename Key>
 set<Key>::set() : tree(new tree_type{}) {}
@@ -136,4 +136,4 @@ bool set<Key>::operator==(const set &other) const {
 }
 
 
-}  // namespace s21
+}  // namespace RBtreeMapSet

@@ -1,10 +1,10 @@
-#ifndef CPP2_S21_CONTAINERS_RED_BLACK_TREE_S21_RED_BLACK_TREE_H_
-#define CPP2_S21_CONTAINERS_RED_BLACK_TREE_S21_RED_BLACK_TREE_H_
+#ifndef CONTAINERS_RED_BLACK_TREE_RED_BLACK_TREE_H_
+#define CONTAINERS_RED_BLACK_TREE_RED_BLACK_TREE_H_
 
 #include <functional>
 #include <limits>
 
-namespace s21 {
+namespace RBtreeMapSet {
 
 enum class Color { kRed, kBlack };
 
@@ -277,7 +277,7 @@ class RedBlackTree {
   Compare cmp;
 };
 
-}  // namespace s21
+}  // namespace RBtreeMapSet
 
-#include "s21_red_black_tree.tpp"
-#endif  // CPP2_S21_CONTAINERS_RED_BLACK_TREE_S21_RED_BLACK_TREE_H_
+#include "red_black_tree.tpp"
+#endif  // CONTAINERS_RED_BLACK_TREE_RED_BLACK_TREE_H_
