@@ -34,11 +34,11 @@ clean:
 	
 .PHONY: style
 style:
-	clang-format -n -style=Google red_black_tree/*.h red_black_tree/*.tpp map/*.h map/*.tpp test/*.cpp
+	clang-format -n -style=Google containers/red_black_tree/*.h containers/red_black_tree/*.tpp containers/*.h containers/*.tpp test/*.cpp
 
 .PHONY: get_style
 get_style:
-	clang-format -i -style=Google red_black_tree/*.h red_black_tree/*.tpp map/*.h map/*.tpp test/*.cpp
+	clang-format -i -style=Google containers/red_black_tree/*.h containers/red_black_tree/*.tpp containers/*.h containers/*.tpp test/*.cpp
 
 
 .PHONY: valgrind

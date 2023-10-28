@@ -85,7 +85,8 @@ std::pair<typename set<Key>::iterator, bool> set<Key>::insert(
 
 template <typename Key>
 template <typename... Args>
-std::vector<std::pair<typename set<Key>::iterator, bool>> set<Key>::insert_many(Args &&...args) {
+std::vector<std::pair<typename set<Key>::iterator, bool>> set<Key>::insert_many(
+    Args &&...args) {
   return tree->Insert_many((args)...);
 }
 
@@ -106,7 +107,7 @@ void set<Key>::merge(set &other) {
 
 template <typename Key>
 typename set<Key>::iterator set<Key>::find(const key_type &key) const {
-    return tree->Find(key);
+  return tree->Find(key);
 }
 
 template <typename Key>
@@ -134,6 +135,5 @@ bool set<Key>::operator==(const set &other) const {
 
   return true;
 }
-
 
 }  // namespace RBtreeMapSet

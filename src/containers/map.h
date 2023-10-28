@@ -3,7 +3,7 @@
 
 #include <stdexcept>
 
-#include "../red_black_tree/red_black_tree.h"
+#include "red_black_tree/red_black_tree.h"
 
 namespace RBtreeMapSet {
 

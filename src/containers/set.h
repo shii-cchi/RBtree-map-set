@@ -1,7 +1,7 @@
 #ifndef CONTAINERS_SET_SET_H_
 #define CONTAINERS_SET_SET_H_
 
-#include "../red_black_tree/red_black_tree.h"
+#include "red_black_tree/red_black_tree.h"
 
 namespace RBtreeMapSet {
 
@@ -48,7 +48,7 @@ class set {
   bool contains(const key_type &key) const;
 
   bool operator==(const set &other) const;
-  
+
  private:
   RedBlackTree<value_type> *tree;
 };
