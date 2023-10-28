@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "../map/map.h"
-#include "../set/set.h"
+#include "../containers.h"
 
 // TREE//
 
